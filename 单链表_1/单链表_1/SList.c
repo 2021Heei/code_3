@@ -1,8 +1,8 @@
 #include "SList.h"
 
-//Êä³ö
+//è¾“å‡º
 void SListPrint(SLTNode* phead) {
-	//Í·Ö¸ÕëÖ¸Ïòµ¥Á´±íµÚÒ»¸öÔªËØ»òÕßÖ¸ÏòNULL£¬²»ÐèÒªÅÐ¶ÏÍ·Ö¸ÕëÊÇ·ñÎª¿Õ
+	//å¤´æŒ‡é’ˆæŒ‡å‘å•é“¾è¡¨ç¬¬ä¸€ä¸ªå…ƒç´ æˆ–è€…æŒ‡å‘NULLï¼Œä¸éœ€è¦åˆ¤æ–­å¤´æŒ‡é’ˆæ˜¯å¦ä¸ºç©º
 	SLTNode* cur = phead;
 	while (cur) {
 		printf("%d->", cur->data);
@@ -11,7 +11,7 @@ void SListPrint(SLTNode* phead) {
 	printf("NULL\n");
 }
 
-//Ïú»Ù
+//é”€æ¯
 void SListDestroy(SLTNode** pphead) {
 	assert(pphead);
 	SLTNode* cur = *pphead;
@@ -23,7 +23,7 @@ void SListDestroy(SLTNode** pphead) {
 	}
 }
 
-//´´½¨Ò»¸öÐÂ½Úµã
+//åˆ›å»ºä¸€ä¸ªæ–°èŠ‚ç‚¹
 SLTNode* BuySLTNode(SLTDataType x) {
 	SLTNode* newnode = (SLTNode*)malloc(sizeof(SLTNode));
 	if (!newnode) {
@@ -33,7 +33,7 @@ SLTNode* BuySLTNode(SLTDataType x) {
 	newnode->next = NULL;
 }
 
-//Í·²åÎ²²å Í·É¾Î²É¾
+//å¤´æ’å°¾æ’ å¤´åˆ å°¾åˆ 
 void SListPushFront(SLTNode** pphead, SLTDataType x) {
 	assert(pphead);
 	SLTNode* newnode = BuySLTNode(x);
@@ -51,7 +51,7 @@ void SListPushBack(SLTNode** pphead, SLTDataType x) {
 		*pphead = newnode;
 	}
 	else {
-		//tail Î²²¿
+		//tail å°¾éƒ¨
 		SLTNode* tail = *pphead;
 		while (tail->next != NULL) {
 			tail = tail->next;
@@ -63,9 +63,9 @@ void SListPushBack(SLTNode** pphead, SLTDataType x) {
 
 void SListPopFront(SLTNode** pphead) {
 	assert(pphead);
-	//ÅÐ¶Ïµ¥Á´±íÊÇ·ñÎª¿Õ£¬ÈôÎª¿Õ¾Í±¨´íÌáÐÑ
+	//åˆ¤æ–­å•é“¾è¡¨æ˜¯å¦ä¸ºç©ºï¼Œè‹¥ä¸ºç©ºå°±æŠ¥é”™æé†’
 	assert(*pphead);
-	////ÎÂÈáÌáÐÑ
+	////æ¸©æŸ”æé†’
 	//if (*pphead == NULL) {
 	//	return;
 	//}
@@ -78,15 +78,15 @@ void SListPopFront(SLTNode** pphead) {
 
 void SListPopBack(SLTNode** pphead) {
 	assert(pphead);
-	//ÅÐ¶Ïµ¥Á´±íÊÇ·ñÎª¿Õ£¬ÈôÎª¿Õ¾Í±¨´íÌáÐÑ
+	//åˆ¤æ–­å•é“¾è¡¨æ˜¯å¦ä¸ºç©ºï¼Œè‹¥ä¸ºç©ºå°±æŠ¥é”™æé†’
 	assert(*pphead);
-	////ÎÂÈáÌáÐÑ
+	////æ¸©æŸ”æé†’
 	//if (*pphead == NULL) {
 	//	return;
 	//}
 
 	if ((*pphead)->next == NULL) {
-		//Ö»ÓÐÒ»¸ö½áµã
+		//åªæœ‰ä¸€ä¸ªç»“ç‚¹
 		*pphead = NULL;
 	}
 	else {
@@ -111,7 +111,7 @@ void SListPopBack(SLTNode** pphead) {
 
 }
 
-//²éÕÒ£¬²»¸Ä±ä´«ÈëµÄÍ·Ö¸Õëplist£¬¿ÉÒÔ²»Ê¹ÓÃ¶þ¼¶Ö¸Õë
+//æŸ¥æ‰¾ï¼Œä¸æ”¹å˜ä¼ å…¥çš„å¤´æŒ‡é’ˆplistï¼Œå¯ä»¥ä¸ä½¿ç”¨äºŒçº§æŒ‡é’ˆ
 SLTNode* SListFind(SLTNode* phead, SLTDataType x) {
 	SLTNode* cur = phead;
 	while (cur->next) {
@@ -124,7 +124,7 @@ SLTNode* SListFind(SLTNode* phead, SLTDataType x) {
 	return NULL;
 }
 
-//ÔÚpos½ÚµãÇ°²åÈëÒ»¸öÐÂ½Úµã,Ö»ÓÐÒ»¸ö½áµãÊ±ÐèÒª¸Ä±äÍ·Ö¸Õëplist£¬¹ÊÐèÒª¶þ¼¶Ö¸Õë
+//åœ¨posèŠ‚ç‚¹å‰æ’å…¥ä¸€ä¸ªæ–°èŠ‚ç‚¹,åªæœ‰ä¸€ä¸ªç»“ç‚¹æ—¶éœ€è¦æ”¹å˜å¤´æŒ‡é’ˆplistï¼Œæ•…éœ€è¦äºŒçº§æŒ‡é’ˆ
 void SListInsert(SLTNode** pphead, SLTNode* pos, SLTDataType x) {
 	assert(pphead);
 	assert(pos);
@@ -142,8 +142,8 @@ void SListInsert(SLTNode** pphead, SLTNode* pos, SLTDataType x) {
 	prev->next = newnode;
 }
 
-//ÔÚpos½Úµãºó²åÈëÒ»¸öÐÂ½Úµã
-//¹ØÓÚ´«ÈëµÄÊÇ½áµãµØÖ·£¬½ÓÊÜµÄÊÇ½á¹¹ÌåÖ¸Õë£¬Ö¸ÏòÁË½áµã
+//åœ¨posèŠ‚ç‚¹åŽæ’å…¥ä¸€ä¸ªæ–°èŠ‚ç‚¹
+//å…³äºŽä¼ å…¥çš„æ˜¯ç»“ç‚¹åœ°å€ï¼ŒæŽ¥å—çš„æ˜¯ç»“æž„ä½“æŒ‡é’ˆï¼ŒæŒ‡å‘äº†ç»“ç‚¹
 void SListInsertAfter(SLTNode* pos, SLTDataType x) {
 	assert(pos);
 
@@ -152,21 +152,27 @@ void SListInsertAfter(SLTNode* pos, SLTDataType x) {
 	pos->next = newnode;
 }
 
-//É¾³ýpos½Úµã
+//åˆ é™¤posèŠ‚ç‚¹
 void SListErase(SLTNode** pphead, SLTNode* pos) {
 	assert(pphead);
 	assert(pos);
-	//´ýÉ¾³ý½áµãµÄÉÏÒ»¸ö½áµã
+    if(*pphead == pos){
+        SListPopFront(pphead);
+    }
+    else{
+    //å¾…åˆ é™¤ç»“ç‚¹çš„ä¸Šä¸€ä¸ªç»“ç‚¹
 	SLTNode* prev = *pphead;
 	while (prev->next != pos) {
 		prev = prev->next;
+        assert(prev);
 	}
 	prev->next = pos->next;
 	free(pos);
 	pos = NULL;
+    }
 }
 
-//É¾³ýpos½áµãµÄºóÒ»¸ö½áµã
+//åˆ é™¤posç»“ç‚¹çš„åŽä¸€ä¸ªç»“ç‚¹
 void SListEraseAfter(SLTNode* pos) {
 	assert(pos);
 	if (pos->next == NULL) {
