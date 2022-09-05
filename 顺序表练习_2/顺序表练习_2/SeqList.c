@@ -2,7 +2,7 @@
 
 //初始化
 void SLInit(SL* psl) {
-	assert(psl);
+	assert(psl);//断言
 	psl->data = NULL;
 	psl->size = 0;
 	psl->capacity = 0;
@@ -10,7 +10,7 @@ void SLInit(SL* psl) {
 
 //打印
 void SLPrint(const SL* psl) {
-	assert(psl);
+	assert(psl);//断言
 	for (int i = 0; i < psl->size; ++i) {
 		printf("%d ", psl->data[i]);
 	}
@@ -62,27 +62,32 @@ void SLPushFront(SL* psl, SLDataType x) {
 }
 
 void SLPopBack(SL* psl) {
-	assert(psl);
-	assert(psl->size > 0);
-	//
-	/*if (psl->size == 0) {
-		return;
-	}*/
-	--psl->size;
+	//assert(psl);
+	//assert(psl->size > 0);
+	////
+	///*if (psl->size == 0) {
+	//	return;
+	//}*/
+	//--psl->size;
+	SLErase(psl, psl->size - 1);
+
 }
 
 void SLPopFront(SL* psl) {
-	assert(psl);
-	assert(psl->size > 0);
-	/*
-	if(psl->size == 0){
-		return;
-	}
-	*/
-	for (int i = 0; i < psl->size - 1; ++i) {
-		psl->data[i] = psl->data[i + 1];
-	}
-	--psl->size;
+	//assert(psl);
+	//assert(psl->size > 0);
+	///*
+	//if(psl->size == 0){
+	//	return;
+	//}
+	//*/
+	//for (int i = 0; i < psl->size - 1; ++i) {
+	//	psl->data[i] = psl->data[i + 1];
+	//}
+	//--psl->size;
+
+	SLErase(psl, 0);
+
 }
 
 //查找，找到返回下标，否则返回-1
@@ -127,3 +132,4 @@ void SLModify(SL* psl, size_t pos, SLDataType x) {
 	assert(pos < psl->size);
 	psl->data[pos] = x;
 }
+

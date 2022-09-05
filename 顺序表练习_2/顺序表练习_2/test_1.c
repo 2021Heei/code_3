@@ -36,38 +36,41 @@ void test_1() {
 
 void test_2() {
 	SL s;
-	SLInit(&s);
-	
-	/*SLPushBack(&s, 1);
-	SLPushBack(&s, 2);
-	SLPushBack(&s, 3);
-	SLPushBack(&s, 4);
-	SLPushBack(&s, 5);
-	SLPushBack(&s, 6);*/
+	//SLInit(&s);
+	//
+	///*SLPushBack(&s, 1);
+	//SLPushBack(&s, 2);
+	//SLPushBack(&s, 3);
+	//SLPushBack(&s, 4);
+	//SLPushBack(&s, 5);
+	//SLPushBack(&s, 6);*/
 
-	SLPushFront(&s, 1);
-	SLPushFront(&s, 2);
-	SLPushFront(&s, 3);
-	SLPushFront(&s, 4);
-	SLPushFront(&s, 5);
-	SLPushFront(&s, 6);
-	SLPushFront(&s, 7);
+	//SLPushFront(&s, 1);
+	//SLPushFront(&s, 2);
+	//SLPushFront(&s, 3);
+	//SLPushFront(&s, 4);
+	//SLPushFront(&s, 5);
+	//SLPushFront(&s, 6);
+	//SLPushFront(&s, 7);
 
-	SLPrint(&s);
+	//SLPrint(&s);
 
-	
-	SLPopBack(&s);
-	SLPopBack(&s);
-	SLPopBack(&s);
+	//
+	//SLPopBack(&s);
+	//SLPopBack(&s);
+	//SLPopBack(&s);
 
-	SLPrint(&s);
+	//SLPrint(&s);
 
-	SLPopBack(&s);
-	SLPopBack(&s);
+	//SLPopBack(&s);
+	//SLPopBack(&s);
+	//SLPopBack(&s);
+	//SLPopBack(&s);
+	//SLPopBack(&s);
 
-	SLPrint(&s);
+	//SLPrint(&s);
 
-	SLDestroy(&s);
+	//SLDestroy(&s);
 
 	SLInit(&s);
 
@@ -86,6 +89,13 @@ void test_2() {
 	SLPopFront(&s);
 
 	SLPrint(&s);
+	SLPopFront(&s);
+	SLPopFront(&s);
+	SLPopFront(&s);
+
+	SLPrint(&s);
+	SLPopFront(&s);
+
 
 
 }
@@ -128,11 +138,11 @@ void test_3() {
 
 }
 
-
 int main() {
-	test_1();
-	//test_2();
+	//test_1();
+	test_2();
 	//test_3();
 
+	
 	return 0;
 }
