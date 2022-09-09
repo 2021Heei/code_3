@@ -67,22 +67,25 @@ void Test_3() {
 	SListPushBack(&plist, 4);
 	SListPrint(plist);
 
-	SLNode* ret = SListFind(plist, 2);
+	/*SLNode* ret = SListFind(plist, 2);
 	if (ret) {
 		ret->data = ret->data * 10;
 		SListPrint(plist);
-	}
-	SLNode* pos = SListFind(plist, 1);
+	}*/
+	/*SLNode* pos = SListFind(plist, 1);
 	if (pos) {
 		SListInsert(&plist, pos, pos->data*100);
 		SListPrint(plist);
-	}
+	}*/
+	/*SLNode* node = (SLNode*)malloc(sizeof(SLNode));
+	SListInsert(&plist, node, 100);
+	SListPrint(plist);*/
 
-	SLNode* pos2 = SListFind(plist, 4);
+	/*SLNode* pos2 = SListFind(plist, 4);
 	if (pos2) {
 		SListInsertAfter(pos2, pos2->data * 1000);
 		SListPrint(plist);
-	}
+	}*/
 
 	/*SLNode* pos3 = SListFind(plist, 4);
 	if (pos3) {
@@ -90,7 +93,7 @@ void Test_3() {
 		SListPrint(plist);
 	}*/
 
-	SLNode* pos4 = SListFind(plist, 4);
+	SLNode* pos4 = SListFind(plist, 3);
 	if (pos4) {
 		SListEraseAfter(pos4);
 		SListPrint(plist);
@@ -103,7 +106,7 @@ void Test_3() {
 int main() {
 	//Test_1();
 	//Test_2();
-	//Test_3();
+	Test_3();
 
 	return 0;
 }
