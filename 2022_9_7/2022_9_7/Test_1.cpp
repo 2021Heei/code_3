@@ -2,16 +2,16 @@
 
 #include <iostream>
 using namespace std;
-class Time {
+class Student {
 public:
-	int hour;
-	int minute;
-	int see;
+	char name[20];
+	char num[20];
+	int score;
 };
 
 int main() {
-	Time t;
-	cin >> t.hour >> t.minute >> t.see;
-	cout << t.hour << ":" << t.minute << ":" << t.see << endl;
+	Student s;
+	cin >> s.name >> s.num >> s.score;
+	cout << s.name << " " << s.num << " " << s.score << endl;
 	return 0;
 }
