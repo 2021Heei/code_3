@@ -22,9 +22,11 @@ void QueueDestroy(Queue* pq) {
 		cur = later;
 	}*/
 }
+
 //入队列
 void QueuePush(Queue* pq, QDataType val) {
 	assert(pq);
+	//申请新节点，申请失败就退出程序
 	QNode* newnode = (QNode*)malloc(sizeof(QNode));
 	if (!newnode) {
 		perror("QueuePush");
@@ -32,10 +34,12 @@ void QueuePush(Queue* pq, QDataType val) {
 	}
 	newnode->val = val;
 	newnode->next = NULL;
-
+	//链表尾插分为两种情况：
+	//1.队头指针为空
 	if (pq->head == NULL) {
 		pq->head = pq->tail = newnode;
 	}
+	//2.队头指针不为空
 	else {
 		//先链接前后节点，在更新尾节点
 		pq->tail->next = newnode;
@@ -60,7 +64,6 @@ void QueuePop(Queue* pq) {
 		del = NULL;
 	}
 	--pq->size;
-
 }
 
 //取队头数据
@@ -84,6 +87,7 @@ bool QueueEmpty(Queue* pq) {
 //计算队列长度
 int QueueSize(Queue* pq) {
 	assert(pq);
+	//遍历法，效率较低
 	/*int n = 0;
 	QNode* cur = pq->head;
 	while (cur) {
@@ -91,5 +95,8 @@ int QueueSize(Queue* pq) {
 		cur = cur->next;
 	}
 	return n;*/
+
+	/*直接在队列结构体里定义一个size，每次入队列或出队列同时改变size，
+	使用时直接从结构体内返回即可*/
 	return pq->size;
 }
