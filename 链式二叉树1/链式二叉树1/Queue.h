@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef int BTDataType;
+typedef char BTDataType;
 typedef struct BTNode {
 	BTDataType val;
 	struct BTNode* left;
