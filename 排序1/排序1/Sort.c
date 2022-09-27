@@ -103,16 +103,16 @@ void AdjustDown(int* a, int size, int parent) {
 	assert(a);
 	//从父节点(堆顶)开始向下调整
 	//假设左孩子是较大的或较小的
-	int maxChild = parent * 2 + 1;
-	while (maxChild < size) {
-		if (maxChild + 1 < size && a[maxChild] < a[maxChild + 1]) {
-			maxChild = maxChild + 1;
+	int Child = parent * 2 + 1;
+	while (Child < size) {
+		if (Child + 1 < size && a[Child] < a[Child + 1]) {
+			Child = Child + 1;
 		}
 		//小堆，孩子小于父亲就交换；大堆，孩子大于父亲就交换
-		if (a[parent] < a[maxChild]) {
-			Swap(&a[parent], &a[maxChild]);
-			parent = maxChild;
-			maxChild = parent * 2 + 1;
+		if (a[parent] < a[Child]) {
+			Swap(&a[parent], &a[Child]);
+			parent = Child;
+			Child = parent * 2 + 1;
 		}
 		else {
 			break;
@@ -126,9 +126,9 @@ void HeapSort(int* a, int n) {
 		AdjustDown(a, n, i);
 	}
 
+	//排序
 	for (int i = 1; i < n; ++i) {
 		Swap(&a[0], &a[n - i]);
 		AdjustDown(a, n-i, 0);
 	}
-
 }

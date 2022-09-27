@@ -3,7 +3,7 @@
 
 void TestSort() {
 	int a[] = { 9,1,2,5,7,4,8,6,3,5 };
-	ShellSort(a, sizeof(a) / sizeof(a[0]));
+	HeapSort(a, sizeof(a) / sizeof(a[0]));
 	PrintSort(a, sizeof(a) / sizeof(a[0]));
 
 }
@@ -72,8 +72,8 @@ void TestSpeed() {
 
 
 int main() {
-	TestSpeed();
-	//TestSort();
+	//TestSpeed();
+	TestSort();
 
 	return 0;
 }

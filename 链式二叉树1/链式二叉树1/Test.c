@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "Queue.h"
 
+//二叉树的前序创建
 BTNode* TreeCreate(BTDataType * a, int* pi) {
 	if (a[(*pi)] == '#') {
 		(*pi)++;
@@ -23,6 +24,7 @@ BTNode* TreeCreate(BTDataType * a, int* pi) {
 	return root;
 }
 
+//二叉树的中序创建
 BTNode* TreeCreateIn(BTDataType* a, int* pi) {
 	if (a[(*pi)] == '#') {
 		(*pi)++;
@@ -46,57 +48,57 @@ BTNode* TreeCreateIn(BTDataType* a, int* pi) {
 	return root;
 }
 
-BTNode* CreateTree() {
-	BTNode* n1 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n1);
-	BTNode* n2 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n2);
-	BTNode* n3 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n3);
-	BTNode* n4 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n4);
-	BTNode* n5 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n5);
-	BTNode* n6 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n6);
-	BTNode* n7 = (BTNode*)malloc(sizeof(BTNode));
-	assert(n7);
-
-	//初始化左右指针为NULL
-	n1->left = n1->right = NULL;
-	n2->left = n2->right = NULL;
-	n3->left = n3->right = NULL;
-	n4->left = n4->right = NULL;
-	n5->left = n5->right = NULL;
-	n6->left = n6->right = NULL;
-	n7->left = n7->right = NULL;
-
-	//手动赋值
-	n1->val = 1;
-	n2->val = 2;
-	n3->val = 3;
-	n4->val = 4;
-	n5->val = 5;
-	n6->val = 6;
-	n7->val = 7;
-
-	//手动控制节点左右指针指向
-	n1->left = n2;
-	n1->right = n3;
-	n2->left = n4;
-	n2->right = NULL;
-	n3->left = n5;
-	n3->right = n6;
-	n4->left = n7;
-	n4->right = NULL;
-	n5->left = NULL;
-	n5->right = NULL;
-	n6->left = NULL;
-	n6->right = NULL;
-	n7->left = NULL;
-	n7->right = NULL;
-	return n1;
-}
+//BTNode* CreateTree() {
+//	BTNode* n1 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n1);
+//	BTNode* n2 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n2);
+//	BTNode* n3 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n3);
+//	BTNode* n4 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n4);
+//	BTNode* n5 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n5);
+//	BTNode* n6 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n6);
+//	BTNode* n7 = (BTNode*)malloc(sizeof(BTNode));
+//	assert(n7);
+//
+//	//初始化左右指针为NULL
+//	n1->left = n1->right = NULL;
+//	n2->left = n2->right = NULL;
+//	n3->left = n3->right = NULL;
+//	n4->left = n4->right = NULL;
+//	n5->left = n5->right = NULL;
+//	n6->left = n6->right = NULL;
+//	n7->left = n7->right = NULL;
+//
+//	//手动赋值
+//	n1->val = 1;
+//	n2->val = 2;
+//	n3->val = 3;
+//	n4->val = 4;
+//	n5->val = 5;
+//	n6->val = 6;
+//	n7->val = 7;
+//
+//	//手动控制节点左右指针指向
+//	n1->left = n2;
+//	n1->right = n3;
+//	n2->left = n4;
+//	n2->right = NULL;
+//	n3->left = n5;
+//	n3->right = n6;
+//	n4->left = n7;
+//	n4->right = NULL;
+//	n5->left = NULL;
+//	n5->right = NULL;
+//	n6->left = NULL;
+//	n6->right = NULL;
+//	n7->left = NULL;
+//	n7->right = NULL;
+//	return n1;
+//}
 
 //递归遍历
 //前序遍历
@@ -110,16 +112,16 @@ void PreOrder(BTNode* root) {
 	PreOrder(root->right);
 }
 //中序遍历
-//void InOrder(BTNode* root){
-//	if (root == NULL) {
-//		printf("NULL ");
-//		return;
-//	}
-//
-//	InOrder(root->left);
-//	printf("%d ", root->val);
-//	InOrder(root->right);
-//}
+void InOrder(BTNode* root){
+	if (root == NULL) {
+		printf("NULL ");
+		return;
+	}
+
+	InOrder(root->left);
+	printf("%d ", root->val);
+	InOrder(root->right);
+}
 
 //后序遍历
 void PostOrder(BTNode* root) {
@@ -133,6 +135,7 @@ void PostOrder(BTNode* root) {
 	printf("%d ", root->val);
 }
 
+//二叉树的节点个数
 int TreeSize(BTNode* root) {
 	if (root == NULL) {
 		return 0;
@@ -162,7 +165,7 @@ int TreeSize(BTNode* root) {
 //	TreeSize(root->right);
 //}
 
-
+//二叉树的叶子节点
 int TreeLeafSize(BTNode* root) {
 	if (root == NULL) {
 		return 0;
@@ -173,6 +176,7 @@ int TreeLeafSize(BTNode* root) {
 	return TreeLeafSize(root->left) + TreeLeafSize(root->right);
 }
 
+//二叉树的高度或深度
 int TreeHeight(BTNode* root) {
 	if (root == NULL) {
 		return 0;
@@ -213,6 +217,7 @@ BTNode* TreeFind(BTNode* root, BTDataType val) {
 	return NULL;
 }
 
+//二叉树的销毁
 void BinaryTreeDestory(BTNode* root) {
 	if (root = NULL) {
 		return;
