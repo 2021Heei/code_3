@@ -76,7 +76,7 @@ void ShellSort(int* a, int n) {
 		//j=1,是第二组
 		//......
 		for (int j = 0; j < gap; ++j) {
-			//[0,end]有序，end+1 排序到-> [0,end+1]有序，每个元素像个gap个元素
+			//[0,end]有序，end+gap 排序到-> [0,end+gap]有序
 			//总共分为gap组，先对每一组进行插入排序
 			for (int i = j; i < n - gap; i += gap) {
 				int end = i;

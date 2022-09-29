@@ -10,8 +10,8 @@ void TestSort() {
 
 void TestSpeed() {
 	srand(time(0));
-	int size = 100000;
-	int a[] = { 9,8,7,6,5,4,3,2,1,10 };
+	int size = 1000000;//数据个数
+	//int a[] = { 9,8,7,6,5,4,3,2,1,10 };
 	int* a1 = (int*)malloc(sizeof(int) * size);
 	assert(a1);
 	int* a2 = (int*)malloc(sizeof(int) * size);
@@ -58,7 +58,7 @@ void TestSpeed() {
 	//ShellSort(a, sizeof(a) / sizeof(a[0]));
 	int end4 = clock();
 
-	printf("BubbleSort: %d\n", end1 - begin1);
+	//printf("BubbleSort: %d\n", end1 - begin1);
 	printf("InsertSort: %d\n", end2 - begin2);
 	printf("HeapSort:   %d\n", end3 - begin3);
 	printf("shellSort:  %d\n", end4 - begin4);
@@ -72,8 +72,32 @@ void TestSpeed() {
 
 
 int main() {
-	//TestSpeed();
-	TestSort();
+	TestSpeed();
+	//TestSort();
 
 	return 0;
 }
+
+//#include <stdio.h>
+//#include <time.h>
+//
+//int main() {
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	printf("asd\n");
+//	int ret = clock();
+//	printf("%d\n", ret);
+//
+//	return 0;
+//}
