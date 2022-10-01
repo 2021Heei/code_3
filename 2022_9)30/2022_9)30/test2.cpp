@@ -306,11 +306,31 @@
 //	return 0;
 //}
 
-int Add(int a, int b) {
-	return a + b;
-}
+//int Add(int a, int b) {
+//	return a + b;
+//}
+//
+//void func(int a, double b, int *p) {
+//	printf("%d %.2lf %p\n", a, b, p);
+//}
+//
+//C++
+//#include <iostream>
+//using namespace std;
+//
+//int func(int a) {
+//	return a;
+//}
+//
+//double func(int a) {
+//	return a;
+//}
+//
+//int main() {
+//
+//	func(10);
+//	func(3.14);
+//	return 0;
+//}
 
-void fun(int a, double b) {
-	printf("%d %.2ld\n", a, b);
-}
 
