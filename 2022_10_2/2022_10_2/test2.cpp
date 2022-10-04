@@ -219,3 +219,250 @@ using namespace std;
 //	A1.Print2();
 //	return 0;
 //}
+
+//class Date {
+//public:
+//	void Init(int year, int month, int day) {
+//		//这样不太好区分类私有成员和函数形参
+//		//解决办法是：
+//		//1.默认左边就是类私有成员，函数形参是右边
+//		//2.左边类私有成员加上类域修饰，如：year --> Date::year
+//		//3.定义私有成员时手动修饰一下，如：year --> _year/year_/m_year/mYear等
+//		year = year;
+//		month = month;
+//		day = day;
+//	}
+//
+//private:
+//	int year;
+//	int month;
+//	int day;
+//};
+
+//class Date {
+//public:
+//	void Init(int year, int month, int day) {
+//		Date::year = year;
+//		Date::month = month;
+//		Date::day = day;
+//	}
+//	void Print() {
+//		cout << year << "/" << month << "/" << day << endl;
+//	}
+//private:
+//	int year;
+//	int month;
+//	int day;
+//};
+//int main() {
+//	Date d;
+//	d.Init(2122, 10, 10);
+//	d.Print();
+//}
+
+//class Date {
+//public:
+//	void Init(int year, int month, int day) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	void Print() {
+//		cout << _year << "/" << _month << "/" << _day << endl;
+//	}
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//	//_day 或 day_ 或 m_day 或 mDay等
+//};
+//int main() {
+//	Date d;
+//	d.Init(2122, 10, 10);
+//	d.Print();
+//}
+
+//namespace B {
+//	void function() {
+//		cout << "namespace B\n" << endl;
+//	}
+//	int c = 20;
+//}
+//int c = 10;
+//int main() {
+//	cout << B::c << endl;
+//	B::function();
+//	return 0;
+//}
+//class A {
+//public:
+//	void func() {
+//		cout << "hello world!\n" << endl;
+//	}
+//	int _a;
+//private:
+//	int _b;
+//};
+//
+//int main() {
+//	A::_a = 10;
+//	A::func();
+//	
+//	return 0;
+//}
+
+//class A {
+//public:
+//	//在公共代码区，不占类的储存空间，
+//	//调用时编译器会直接到公共代码区找相应的函数
+//	void func() {
+//		cout << "hello world!\n" << endl;
+//	}
+//private:
+//	char _a;//0
+//			//1 -> 3
+//	int _b;//4 -> 7  共8byte
+//};
+//
+//int main() {
+//	sizeof(A);
+//	A A1;
+//	sizeof(A1);
+//	return 0;
+//}
+
+
+//int main() {
+//	//A::a = 10;//类还没有实体（实例），还只是一个类型
+//	//A::func();//this指针
+//
+//	A A1;
+//	A1.a = 10;
+//	A1.func();
+//	A* pA1 = &A1;
+//	pA1->a = 20;
+//	A1.func();
+//
+//	return 0;
+//}
+
+
+//class A {
+//	void func2() {
+//		;
+//	}
+//};
+////空类
+//class B{
+//};
+////类储存方式的选择：
+////类大小的计算：与C语言结构体相同
+//int main() {
+//
+//	A A1;
+//	//不储存有效数据，占位，标识对象存在
+//	cout << sizeof(A1) << endl;
+//	B B1;
+//	//不储存有效数据，占位，标识对象存在
+//	cout << sizeof(B1) << endl;
+//	return 0;
+//}
+
+//class A {
+//public:
+//	void Init(int year, int month, int day) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	//void Print(A* const this)//修饰指针this        常量指针
+//	  void Print(const A* this)//修饰指针指向内容    指针常量
+//	void Print() {
+//		cout << "this: " << this << endl;
+//		//cout << _year << "/" << _month << "/" << _day << endl;
+//		cout << this->_year << "/" << this->_month << "/" << this->_day << endl;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//int main() {
+//
+//	A a, b;
+//	a.Init(2122, 10, 3);
+//	a.Print();
+//	cout << "&a: " << & a << endl;
+//	b.Init(3122, 10, 3);
+//	b.Print();
+//	cout << "&b: " << &b << endl;
+//	return 0;
+//}
+
+//class A {
+//public:
+//	void Init(int year, int month, int day) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//
+//	void Print() {
+//		cout << _year << "/" << _month << "/" << _day << endl;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//int main() {
+//
+//	A a;
+//	a.Init(2122, 10, 3);
+//	a.Print();
+//
+//	A b;
+//	b.Init(3122, 10, 3);
+//	b.Print();
+//	return 0;
+//}
+
+//class A {
+//public:
+//	void Init(int year, int month, int day) {
+//		this->_year = year;
+//		this->_month = month;
+//		this->_day = day;
+//	}
+//	void Print() {
+//		cout << "this: " << this << endl;
+//		//cout << _year << "/" << _month << "/" << _day << endl;
+//		cout << this->_year << "/" 
+//			<< this->_month << "/" << this->_day << endl;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//int main() {
+//
+//	A a;
+//	a.Init(2122, 10, 3);
+//	a.Print();
+//	cout << "&a: " << &a << endl;
+//
+//	A b;
+//	b.Init(3122, 10, 3);
+//	b.Print();
+//	cout << "&b: " << &b << endl;
+//	return 0;
+//}
+
+

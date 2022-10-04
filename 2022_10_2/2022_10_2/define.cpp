@@ -1,6 +1,6 @@
 #include "statement.h"
 
-void Init(size_t capacity) {
+void Stack::Init(size_t capacity) {
 	_array = (int*)malloc(sizeof(int) * capacity);
 	if (_array == nullptr) {
 		perror("Init file");
@@ -21,7 +21,7 @@ bool Stack::Empty() {
 }
 
 
-void Init() {
+void Queue::Init() {
 	_head = _tail = nullptr;
 	_size = 0;
 }
