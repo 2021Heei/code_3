@@ -465,4 +465,109 @@ using namespace std;
 //	return 0;
 //}
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+//class Date {
+//public:
+//	/*void Init(int year, int month, int day) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}*/
+//	//构造函数
+//	//对象创建时，自动调用构造函数对对象进行初始化  
+//	//函数名和类名相同
+//	//没有返回值且不写返回类型位置啥也不写
+//	Date(int year, int month, int day) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//
+//	void Print() {
+//		cout << _year << "/" << _month << "/" << _day << endl;
+//	}
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+
+//int main() {
+//
+//	Date a(2020, 1, 2);
+//	a.Print();
+//
+//	Date b(2010, 10, 10);
+//	b.Print();
+//	return 0;
+//}
+
+//class Date {
+//public:
+//	Date(int year, int month, int day) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	void Print() {
+//		cout << _year << "/" << _month << "/" << _day << endl;
+//	}
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//int main() {
+//
+//	Date a(2022, 10, 10);
+//	a.Print();
+//	return 0;
+//}
+
+
+class Date {
+public:
+	Date(int year, int month, int day) {
+		_year = year;
+		_month = month;
+		_day = day;
+	}
+	Date(int year, int month) {
+		_year = year;
+		_month = month;
+		_day = 1;
+	}
+	Date(int year) {
+		_year = year;
+		_month = 1;
+		_day = 1;
+	}
+	Date() {
+		_year = 1970;
+		_month = 1;
+		_day = 1;
+	}
+	void Print() {
+		cout << _year << "/" << _month << "/" << _day << endl;
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+int main() {
+
+	Date a1(2020, 1, 2);
+	Date a2;
+	Date a3();//使用无参构造函数初始化时，不加括号，否则会与 函数声明混淆
+	//Date func();// warning C4930: “Date a3(void)”: 未调用原型函数(是否是有意用变量定义的?)
+	a1.Print();
+	a2.Print();
+	//a3.Print();
+	return 0;
+}

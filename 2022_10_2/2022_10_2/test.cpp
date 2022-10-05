@@ -987,21 +987,595 @@ using namespace std;
 //拷贝构造
 
 
+//#include <iostream>
+//using namespace std;
+//int main() {
+//	float x, y, a;
+//	for (y = 1.5; y > -1.5; y -= 0.1)
+//	{
+//		for (x = -1.5; x < 1.5; x += 0.05) {
+//			a = x * x + y * y - 1;
+//			putchar(a * a * a - x * x * y * y * y <= 0.0 ? '*' : ' ');
+//		}
+//		system("color 0c");
+//		putchar('\n');
+//	}
+//	return 0;
+//}
+
 #include <iostream>
+#include <cassert>
+#include <cstdlib>
 using namespace std;
-int main() {
-	float x, y, a;
-	for (y = 1.5; y > -1.5; y -= 0.1)
-	{
-		for (x = -1.5; x < 1.5; x += 0.05) {
-			a = x * x + y * y - 1;
-			putchar(a * a * a - x * x * y * y * y <= 0.0 ? '*' : ' ');
-		}
-		system("color 0c");
-		putchar('\n');
-	}
-	return 0;
-}
+
+//class Date {
+//public:
+//	//构造即是初始化
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	//我们不写，编译器默认会生成拷贝构造函数
+//	//内置类型编译器自动拷贝构造
+//	//自定义类型看具体情况，可能需要我们字节写，也可能不需要我们自己写
+//	Date(Date &d) {
+//		cout << "拷贝构造 Date(Date &d)" << endl;
+//		_year = d._year;
+//		_month = d._month;
+//		_day = d._day;
+//	}
+//	//用指针就不是拷贝构造了，是普通构造函数
+//	/*Date(Date* d) {
+//		cout << "普通构造 Date(Date &d)" << endl;
+//		_year = d->_year;
+//		_month = d->_month;
+//		_day = d->_day;
+//	}*/
+//private:
+//	int _year = 0;//缺省值，不是初始化，因为类类型并不占空间
+//	int _month = 0;
+//	int _day = 0;
+//};
+//
+////传值传参，先调用了拷贝构造，形参是实参的别名
+//void Func1(Date d) {
+//	cout << "Func1()" << endl;
+//}
+////传引用传参，形参是实参的别名
+//void Func2(Date& d) {
+//	cout << "Func2()" << endl;
+//}
+//
+//int main() {
+//	Date d1(2022,11,11);
+//	Date d2(d1);//拷贝构造 - 拷贝初始化
+//	/*Func1(d1);
+//	Func2(d1);*/
+//	return 0;
+//}
+
+
+//class Date {
+//public:
+//	//构造即是初始化
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+	////形参多加一个const限制，使引用d权限序缩小，写反时便于编译器检查，
+	//Date(const Date& d) {
+	//	cout << "拷贝构造 Date(Date &d)" << endl;
+	//	_year = d._year;
+	//	_month = d._month;
+	//	_day = d._day;
+	//}
+//
+//private:
+//	int _year = 0;//缺省值，不是初始化，因为类类型并不占空间
+//	int _month = 0;
+//	int _day = 0;
+//};
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(d1);//拷贝构造 - 拷贝初始化
+//	return 0;
+//}
+
+//后构造的先析构，符合栈的性质
+//class Date {
+//public:
+//	//构造即是初始化
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//
+//private:
+//	int _year = 0;//缺省值，不是初始化，因为类类型并不占空间
+//	int _month = 0;
+//	int _day = 0;
+//};
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(d1);//拷贝构造 - 拷贝初始化
+//	return 0;
+//}
+
+
+//对于内置类型
+//浅拷贝（值拷贝）时，编译器默认生成的拷贝构造就是够用的
+//深拷贝时，内置类型也许要自己写拷贝构造函数，即编译器默认生成的不完全适合
+//class Stack {
+//public:
+//	//普通构造
+//	Stack(int capacity = 4) {
+//		_array = (int*)malloc(sizeof(int) * capacity);
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//	//手写拷贝构造
+//	Stack(const Stack& st) {
+//		_array = (int*)malloc(sizeof(int) * st._capacity);
+//		assert(_array);
+//		//memcpy(des, src, sizeByte)
+//		memcpy(_array, st._array, sizeof(int) * st._top);
+//		_top = st._top;
+//		_capacity = st._capacity;
+//	}
+//	void Push(int val) {
+//		if (_top == _capacity) {
+//			int newcapacity = _capacity * 2;
+//			int* tmp = (int*)realloc(_array, sizeof(int) * newcapacity);
+//			assert(tmp);
+//			_array = tmp;
+//			_capacity = newcapacity;
+//		}
+//		_array[_top++] = val;
+//	}
+//	~Stack() {
+//		cout << "~Stack()" << endl;
+//		free(_array);
+//		_array = nullptr;
+//		_top = _capacity = 0;
+//	}
+//private:
+//	int* _array;
+//	size_t _top;
+//	size_t _capacity;
+//};
+//
+////需要写析构函数的类，都需要写深拷贝的拷贝构造，因为有资源需要额外创建空间并拷贝到该空间
+////比如说动态申请的空间资源......
+////不需要写析构函数的类，默认生成的浅拷贝的拷贝构造就足够使用了
+//int main() {
+	//Stack st1;
+	//st1.Push(1);
+	//st1.Push(2);
+	//Stack st2(st1);
+//	st2.Push(3);
+//	//析构的时候出问题了，同一块空间free了两次
+//	return 0;
+//}
+
+
+//class Stack {
+//public:
+//	//普通构造
+//	Stack(int capacity = 4) {
+//		cout << "普通构造: Stack(int capacity = 4)" << endl;
+//		_array = (int*)malloc(sizeof(int) * capacity);
+//		_top = 0;
+//		_capacity = capacity;
+//	}
+//	//手写拷贝构造
+//	Stack(const Stack& st) {
+//		cout << "拷贝构造: Stack(const Stack& st)" << endl;
+//		_array = (int*)malloc(sizeof(int) * st._capacity);
+//		assert(_array);
+//		//memcpy(des, src, sizeByte)
+//		memcpy(_array, st._array, sizeof(int) * st._top);
+//		_top = st._top;
+//		_capacity = st._capacity;
+//	}
+//	void Push(int val) {
+//		if (_top == _capacity) {
+//			int newcapacity = _capacity * 2;
+//			int* tmp = (int*)realloc(_array, sizeof(int) * newcapacity);
+//			assert(tmp);
+//			_array = tmp;
+//			_capacity = newcapacity;
+//		}
+//		_array[_top++] = val;
+//	}
+//	~Stack() {
+//		cout << "析构: ~Stack()" << endl;
+//		free(_array);
+//		_array = nullptr;
+//		_top = _capacity = 0;
+//	}
+//private:
+//	int* _array;
+//	size_t _top;
+//	size_t _capacity;
+//};
+//
+//class myQueue {
+//	//我们没写，这里生成了 默认构造函数，但编译器对内置类型一般不做处理，是随机值(如果编译器处理那就是0)
+//	//对自定义类型就调用自定义类型变量的构造函数
+//private:
+//	Stack stPush;
+//	Stack stPop;
+//	int size;
+//};
+//
+////myQueue的成员变量包含自定义类型，但是myQueue就不需要写拷贝构造
+////因为对于内置类型size，编译器会默认生成拷贝构造
+////对于自定义类型stPush和stPop，编译器会直接调用它们自己的拷贝构造函数
+////总的来说，是看具体的需求和情况
+//int main() {
+//
+//	myQueue q1;
+//	myQueue q2(q1);
+//	return 0;
+//}
+
+
+///////////////////////////////////////////////////////////////////////////
+//运算符重载
+//有什么意义？
+//以日期类为例解答
+//支持类的运算，并简化类运算时的表示
+//与函数重载不同哦
+
+//class Date {
+//public:
+//	//构造
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	//形参多加一个const限制，使引用d权限序缩小，写反时便于编译器检查，
+//	Date(const Date& d) {
+//		//cout << "拷贝构造 Date(Date &d)" << endl;
+//		_year = d._year;
+//		_month = d._month;
+//		_day = d._day;
+//	}
+////private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+////函数完成功能
+//bool isEqual(const Date& d1, const Date& d2) {
+//	return d1._year == d2._year &&
+//		d1._month == d2._month &&
+//		d1._day == d2._day;
+//}
+////c++引入，但是在类外不能访问到私有成员变量了，除了友元函数
+//bool operator==(const Date& d1, const Date& d2) {
+//	return d1._year == d2._year &&
+//		d1._month == d2._month &&
+//		d1._day == d2._day;
+//}
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(2022, 11, 11);
+//	int ret1 = d1 == d2;
+//	cout << "(d1 == d2): " << (d1 == d2) << endl;
+//	cout << "ret1: " << ret1 << endl;
+//	int ret2 = operator==(d1, d2);
+//	cout << "operator==(d1, d2): " << operator==(d1, d2) << endl;
+//	cout << "ret2: " << ret2 << endl;
+//	return 0;
+//}
+
+
+//class Date {
+//public:
+//	//构造
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	//形参多加一个const限制，使引用d权限序缩小，写反时便于编译器检查，
+//	Date(const Date& d) {
+//		//cout << "拷贝构造 Date(Date &d)" << endl;
+//		_year = d._year;
+//		_month = d._month;
+//		_day = d._day;
+//	}
+//	int GetYear() {
+//		int year = this->_year;
+//		return year;
+//	}
+//	int GetMonth() {
+//		int month = _month;
+//		return month;
+//	}
+//	int GetDay() {
+//		int day = _day;
+//		return day;
+//	}
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+////c++引入，但是在类外不能访问到私有成员变量了，除了友元函数
+////发生错误，
+//bool operator==(const Date& d1, const Date& d2) {
+//	return d1.GetYear() == d2.GetYear() &&
+//		d1.GetMonth() == d2.GetMonth() &&
+//		d1.GetDay() == d2.GetDay();
+//}
+//bool operator==(Date& d1, Date& d2) {
+//	return d1.GetYear() == d2.GetYear() &&
+//		d1.GetMonth() == d2.GetMonth() &&
+//		d1.GetDay() == d2.GetDay();
+//}
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(2022, 11, 11);
+//	int ret1 = d1 == d2;
+//	cout << "(d1 == d2): " << (d1 == d2) << endl;
+//	cout << "ret1: " << ret1 << endl;
+//	int ret2 = operator==(d1, d2);
+//	cout << "operator==(d1, d2): " << operator==(d1, d2) << endl;
+//	cout << "ret2: " << ret2 << endl;
+//	return 0;
+//}
+
+
+//class Date {
+//public:
+//	//构造
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	//形参多加一个const限制，使引用d权限序缩小，写反时便于编译器检查，
+//	Date(const Date& d) {
+//		//cout << "拷贝构造 Date(Date &d)" << endl;
+//		_year = d._year;
+//		_month = d._month;
+//		_day = d._day;
+//	}
+//	//错误，参数过多，==应该只有两个操作数，
+//	//而在类内的函数都会有一个隐含的形参this指针
+//	/*bool operator==(const Date& d1, const Date& d2) {
+//		return d1._year == d2._year &&
+//			d1._month == d2._month &&
+//			d1._day == d2._day;
+//	}*/
+//
+//	bool operator==(const Date& d) {
+//		return _year == d._year &&
+//			_month == d._month &&
+//			_day == d._day;
+//	}
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(2022, 11, 11);
+//	int ret1 = d1 == d2;
+//	cout << "(d1 == d2): " << (d1 == d2) << endl;
+//	cout << "ret1: " << ret1 << endl;
+//	int ret2 = d1.operator==(d2);
+//	cout << "d1.operator==(d2): " << d1.operator==(d2) << endl;
+//	cout << "ret2: " << ret2 << endl;
+//	return 0;
+//}
+
+//class Date {
+//public:
+//	//构造
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//	//形参多加一个const限制，使引用d权限序缩小，写反时便于编译器检查，
+//	Date(const Date& d) {
+//		//cout << "拷贝构造 Date(Date &d)" << endl;
+//		_year = d._year;
+//		_month = d._month;
+//		_day = d._day;
+//	}
+//	void Print() {
+//		cout << _year << "/" << _month << "/" << _day << endl;
+//	}
+//	int DateTransDay() {
+//		 Date cur(*this);
+//		 
+//		 while (cur._year > 0 || cur._month > 0) {
+//			 cur._month--;
+//			 if (cur._month == 0 && cur._year > 0) {
+//				 cur._month = 12;
+//				 cur._year--;
+//			 }
+//			 cur._day += GetDay(cur._year, cur._month);
+//			 //cout << cur._year << "    " << cur._month << "    " << cur._day << endl;
+//		}
+//		 return cur._day;
+//	}
+//	//等于
+//	bool operator==(const Date& d) {
+//		return _year == d._year &&
+//			_month == d._month &&
+//			_day == d._day;
+//	}
+//	//大于
+//	bool operator>(const Date& d) {
+//		if (_year > d._year) {
+//			return true;
+//		}
+//		else if (_year == d._year && _month > d._month) {
+//			return true;
+//		}
+//		else if (_year == d._year && _month == d._month && _day > d._day) {
+//			return true;
+//		}
+//		return false;
+//	}
+//	//小于
+//	bool operator<(const Date& d) {
+//		//return !((this->operator==(d)) || (this->operator>(d)));
+//		if (_year < d._year) {
+//			return true;
+//		}
+//		else if (_year == d._year && _month < d._month) {
+//			return true;
+//		}
+//		else if (_year == d._year && _month == d._month && _day < d._day) {
+//			return true;
+//		}
+//		return false;
+//	}
+//	//小于等于
+//	bool operator<=(const Date& d) {
+//		return this->operator<(d) || this->operator==(d);
+//	}
+//	//大于等于
+//	bool operator>=(const Date& d) {
+//		return this->operator>(d) || this->operator==(d);
+//	}
+//	//得到某一月天数
+//	static int GetDay(int year, int month) {
+//		//平年
+//		int array[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+//		//特殊处理闰年2月
+//		if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) && month == 2) {
+//			return 29;
+//		}
+//		return array[month];
+//	}
+//	//d1+d2
+//	Date operator+(int day) {
+//		Date cur(*this);
+//		cur._day = cur._day + day;
+//		while (cur._day > GetDay(cur._year, cur._month)) {
+//			cur._day -= GetDay(cur._year, cur._month);
+//			cur._month++;
+//			if (cur._month > 12) {
+//				cur._year++;
+//				cur._month = 1;
+//			}
+//		}
+//		return cur;
+//	}
+//	//+=
+//	Date& operator+=(int day) {
+//		_day = _day + day;
+//		while (_day > GetDay(_year, _month)) {
+//			_day -= GetDay(_year, _month);
+//			_month++;
+//			if (_month > 12) {
+//				_year++;
+//				_month = 1;
+//			}
+//		}
+//		return *this;
+//	}
+//	//-
+//	int operator-(Date& d) {
+//		Date cur(*this);
+//		return this->DateTransDay() - d.DateTransDay();
+//
+//		/*cur._day -= d._day;
+//		if (cur._day < 0) {
+//			cur._day += GetDay(cur._year, cur._month);
+//			cur._month--;
+//		}
+//		cur._month -= d._month;
+//		if (cur._month < 0) {
+//			cur._month += 12;
+//			cur._year--;
+//		}
+//		cur._year -= d._year;
+//		return cur;*/
+//	}
+//
+//
+//private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+//
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(2022, 12, 12);
+//	//cout << (d1 > d2) << endl;
+//
+//	/*cout << (d1 < d2) << endl;
+//	cout << (d2 < d1) << endl;*/
+//
+//	/*cout << (d1 <= d2) << endl;
+//	cout << (d2 <= d1) << endl;*/
+//
+//	//cout << (d1 >= d2) << endl;
+//	//cout << (d2 >= d1) << endl;
+//
+//	/*d1.Print();
+//	(d1 + 50).Print();
+//	d2.Print();
+//	(d2 + 60).Print();*/
+//
+//	d1.Print();
+//	d1 += 50;
+//	d1.Print();
+//
+//	d2.Print();
+//	d2 += 60;
+//	d2.Print();
+//
+//	//cout << d1.DateTransDay() << endl;
+//	/*cout << (d1 - d2) << endl;
+//	cout << (d2 - d1) << endl;*/
+//
+//	return 0;
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
