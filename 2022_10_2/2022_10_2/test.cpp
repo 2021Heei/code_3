@@ -705,10 +705,10 @@
 //}
 
 
-#include <iostream>
-#include <cstdlib>
-#include <cassert>
-using namespace std;
+//#include <iostream>
+//#include <cstdlib>
+//#include <cassert>
+//using namespace std;
 
 //class Stack {
 //public:
@@ -1002,12 +1002,12 @@ using namespace std;
 //	}
 //	return 0;
 //}
-
-#include <iostream>
-#include <cassert>
-#include <cstdlib>
-using namespace std;
-
+//
+//#include <iostream>
+//#include <cassert>
+//#include <cstdlib>
+//using namespace std;
+//
 //class Date {
 //public:
 //	//构造即是初始化
@@ -1153,10 +1153,10 @@ using namespace std;
 ////比如说动态申请的空间资源......
 ////不需要写析构函数的类，默认生成的浅拷贝的拷贝构造就足够使用了
 //int main() {
-	//Stack st1;
-	//st1.Push(1);
-	//st1.Push(2);
-	//Stack st2(st1);
+//	Stack st1;
+//	st1.Push(1);
+//	st1.Push(2);
+//	Stack st2(st1);
 //	st2.Push(3);
 //	//析构的时候出问题了，同一块空间free了两次
 //	return 0;
@@ -1294,7 +1294,7 @@ using namespace std;
 //		_day = d._day;
 //	}
 //	int GetYear() {
-//		int year = this->_year;
+//		int year = _year;
 //		return year;
 //	}
 //	int GetMonth() {
@@ -1313,7 +1313,7 @@ using namespace std;
 //
 ////c++引入，但是在类外不能访问到私有成员变量了，除了友元函数
 ////发生错误，
-//bool operator==(const Date& d1, const Date& d2) {
+//bool operator==(Date& d1, Date& d2) {
 //	return d1.GetYear() == d2.GetYear() &&
 //		d1.GetMonth() == d2.GetMonth() &&
 //		d1.GetDay() == d2.GetDay();
@@ -1323,7 +1323,7 @@ using namespace std;
 //		d1.GetMonth() == d2.GetMonth() &&
 //		d1.GetDay() == d2.GetDay();
 //}
-//
+
 //int main() {
 //	Date d1(2022, 11, 11);
 //	Date d2(2022, 11, 11);

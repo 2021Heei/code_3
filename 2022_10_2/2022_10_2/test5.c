@@ -253,3 +253,19 @@
 //	}
 //	return 0;
 //}
+
+
+//#include <stdio.h>
+//
+//struct Date {
+//	int year;
+//	int month;
+//	int day;
+//};
+//
+//int main() {
+//	struct Date a = { 2022,10,10 };
+//	struct Date b;
+//	b = a;
+//	return 0;
+//}
