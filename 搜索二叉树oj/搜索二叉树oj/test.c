@@ -8,7 +8,7 @@ struct TreeNode {
 };
  
 
-
+//二叉搜索树中的搜索
 struct TreeNode* searchBST(struct TreeNode* root, int val) {
     if (root == NULL) {
         return NULL;
@@ -24,16 +24,8 @@ struct TreeNode* searchBST(struct TreeNode* root, int val) {
 
 
 
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     struct TreeNode *left;
- *     struct TreeNode *right;
- * };
- */
 
-
+//二叉搜索树中的插入操作
 struct TreeNode* insertIntoBST(struct TreeNode* root, int val) {
     //树为空
     if (root == NULL) {
