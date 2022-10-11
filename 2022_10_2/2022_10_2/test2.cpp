@@ -1404,46 +1404,46 @@ using namespace std;
 
 
 
-class Date {
-public:
-	//构造
-	Date(int year = 1, int month = 1, int day = 1) {
-		_year = year;
-		_month = month;
-		_day = day;
-	}
-
-	Date(const Date& d) {
-		_year = d._year;
-		_month = d._month;
-		_day = d._day;
-	}
-//private:
-	int _year;
-	int _month;
-	int _day;
-};
-//函数完成功能
-bool isEqual(const Date& d1, const Date& d2) {
-	return d1._year == d2._year &&
-		d1._month == d2._month &&
-		d1._day == d2._day;
-}
-//c++引入，但是在类外不能访问到私有成员变量了，除了友元函数
-bool operator==(const Date& d1, const Date& d2) {
-	return d1._year == d2._year &&
-		d1._month == d2._month &&
-		d1._day == d2._day;
-}
-
-int main() {
-	Date d1(2022, 11, 11);
-	Date d2(2022, 11, 11);
-	int ret1 = d1 == d2;
-	cout << "(d1 == d2): " << (d1 == d2) << endl;
-	cout << "ret1: " << ret1 << endl;
-	int ret2 = operator==(d1, d2);
-	cout << "operator==(d1, d2): " << operator==(d1, d2) << endl;
-	cout << "ret2: " << ret2 << endl;
-	return 0;
-}
+//class Date {
+//public:
+//	//构造
+//	Date(int year = 1, int month = 1, int day = 1) {
+//		_year = year;
+//		_month = month;
+//		_day = day;
+//	}
+//
+//	Date(const Date& d) {
+//		_year = d._year;
+//		_month = d._month;
+//		_day = d._day;
+//	}
+////private:
+//	int _year;
+//	int _month;
+//	int _day;
+//};
+////函数完成功能
+//bool isEqual(const Date& d1, const Date& d2) {
+//	return d1._year == d2._year &&
+//		d1._month == d2._month &&
+//		d1._day == d2._day;
+//}
+////c++引入，但是在类外不能访问到私有成员变量了，除了友元函数
+//bool operator==(const Date& d1, const Date& d2) {
+//	return d1._year == d2._year &&
+//		d1._month == d2._month &&
+//		d1._day == d2._day;
+//}
+//
+//int main() {
+//	Date d1(2022, 11, 11);
+//	Date d2(2022, 11, 11);
+//	int ret1 = d1 == d2;
+//	cout << "(d1 == d2): " << (d1 == d2) << endl;
+//	cout << "ret1: " << ret1 << endl;
+//	int ret2 = operator==(d1, d2);
+//	cout << "operator==(d1, d2): " << operator==(d1, d2) << endl;
+//	cout << "ret2: " << ret2 << endl;
+//	return 0;
+//}

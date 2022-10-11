@@ -38,3 +38,5 @@ void Queue::Destroy() {
 bool Queue::Empty() {
 	return _head == nullptr;
 }
+
+
