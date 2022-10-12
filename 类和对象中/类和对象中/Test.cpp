@@ -86,10 +86,74 @@ void TestSatck() {
 
 }
 
+void TestDate3() {
+	/*Date d1(2022, 10, 11);
+	Date d2(2022, 10, 11);
+	int ret = d1 > d2;
+
+	(d1 + 1000).Print();
+	d2 += 10000;
+	d2.Print();
+	d1 += -20000;
+	d1.Print();*/
+
+	/*Date d1(2022, 10, 11);
+	Date d2(2022, 10, 11);
+	int ret = d1 > d2;
+
+	(d1 - 1000).Print();
+	d2 -= 10000;
+	d2.Print();
+	d1 -= -10000;
+	d1.Print();*/
+
+	//	前置和后置函数，运算符重载和函数重载，
+	//	后置多了一个int参数，目的是与前置区分，由编译器传递，构成函数重载
+	//	对于内置类型，前置与后置基本没有差别；
+	//	对于自定义类型，前置比后置少了两次拷贝构造函数的调用，所以尽量使用前置++/--
+	/*Date d1(2022, 10, 11);
+	Date d2(2022, 10, 11);
+	d1.Print();
+	(++d1).Print();
+	d1.Print();
+
+	d2.Print();
+	(d2++).Print();
+	d2.Print();*/
+
+	/*Date d1(2022, 10, 11);
+	Date d2(2022, 10, 11);
+	d1.Print();
+	(--d1).Print();
+	d1.Print();
+
+	d2.Print();
+	(d2--).Print();
+	d2.Print();*/
+	
+	Date d1(2022, 10, 12);
+	Date d2(2020, 12, 28);
+	cout << (d1 < d2) << endl;
+	cout << d1 - d2 << endl;
+}
+
+void TestDate4() {
+	Date d1;
+	//cin >> d1;
+	//d1 >> cin;//流插入运算符>> 左右操作数反了
+
+	Date d2;
+	//cin >> d2;
+	cin >> d2;// operator>>(cin, d2);
+	cout << d2;
+}
+
 int main() {
 
 	//TestDate1();
 	//TestDate2();
-	TestSatck();
+	//TestSatck();
+	//TestDate3();
+	TestDate4();
 	return 0;
 }
