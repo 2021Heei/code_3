@@ -105,7 +105,7 @@ Date Date::operator--(int) {
 
 
 
-bool Date::operator==(const Date& d) {
+bool Date::operator==(const Date& d)const {
 	return _year == d._year
 		&& _month == d._month
 		&& _day == d._day;

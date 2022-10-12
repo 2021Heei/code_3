@@ -28,16 +28,23 @@ void TestDate1() {
 }
 
 void TestDate2() {
-	Date d1;
-	Date d2(2022, 10, 11);
-	Date d3(d2);	//拷贝构造，一个拷贝初始化另一个马上要创建的对象
-	Date d4 = d2;	//拷贝构造
-	Date d5;
-	d5 = d2;		//赋值重载、复制拷贝，已存在的两个对象之间的拷贝
+
+	Date d1(2022, 10, 12);
+	Date d2;
+
 	d2.Print();
-	d3.Print();
-	d4.Print();
-	d5.Print();
+	d2 = d1;
+	d2.Print();
+
+	//Date d1(2022, 10, 11);
+	//Date d2(d1);	//拷贝构造，一个拷贝初始化另一个马上要创建的对象
+	//Date d3 = d1;	//拷贝构造
+	//Date d4;
+	//d4 = d1;		//赋值重载、复制拷贝，已存在的两个对象之间的拷贝
+	//d1.Print();
+	//d2.Print();
+	//d3.Print();
+	//d4.Print();
 	//赋值运算符重载：
 	//为什么用引用返回？ - 减少一次拷贝
 	//为什么参数用常引用？ - 减少一次拷贝，且使用方便
@@ -46,10 +53,10 @@ void TestDate2() {
 	//		连续赋值时一般表达式的返回值是左边的变量，
 	//为什么不用指针做第二个参数？ - 使用麻烦
 
-	Date d6, d7;
+	/*Date d6, d7;
 	d6 = d7 = d2;
 	d6.Print();
-	d7.Print();
+	d7.Print();*/
 }
 
 void TestSatck() {
@@ -68,21 +75,21 @@ void TestSatck() {
 	//st1与st2基本相当
 	//st1大于st2
 
-	Stack st3;
-	st3.Push(1);
-	st3.Push(2);
+	//Stack st3;
+	////st3.Push(1);
+	//st3.Push(2);
 
-	st3 = st3;//防止自己给自己赋值，进行判断即可
+	//st3 = st3;//防止自己给自己赋值，进行判断即可
 
-	//myQueue和Date类operator= 满足需求，不需要再手动写了
-	myQueue q1;
-	q1.Push(1);
-	q1.Push(2);
-	myQueue q2;
-	q2.Push(2);
-	q2.Push(2);
+	////myQueue和Date类operator= 满足需求，不需要再手动写了
+	//myQueue q1;
+	//q1.Push(1);
+	//q1.Push(2);
+	//myQueue q2;
+	//q2.Push(2);
+	//q2.Push(2);
 
-	q1 = q2;
+	//q1 = q2;
 
 }
 
@@ -144,16 +151,30 @@ void TestDate4() {
 
 	Date d2;
 	//cin >> d2;
-	cin >> d2;// operator>>(cin, d2);
-	cout << d2;
+	//cin >> d2;// operator>>(cin, d2);
+	d2 << cout;
+	//cout << d2;
 }
 
-int main() {
+void TestDate5() {
+	Date d1;
+	cout << &d1 << endl;
 
-	//TestDate1();
-	//TestDate2();
-	//TestSatck();
-	//TestDate3();
-	TestDate4();
-	return 0;
+	/*const Date d2;
+	cout << &d2 << endl;*/
 }
+//int main() {
+//
+//	//TestDate1();
+//	//TestDate2();
+//	//TestSatck();
+//	//TestDate3();
+//	//TestDate4();
+//	TestDate5();
+//	return 0;
+//}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//2022 - 10 - 13

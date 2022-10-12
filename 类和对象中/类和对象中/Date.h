@@ -7,6 +7,10 @@ class Date {
 public:
 	friend istream& operator>>(istream& input, Date& d);
 	friend ostream& operator<<(ostream& output, const Date& d);
+	ostream& operator<<(ostream& output) {
+		output << _year << "/" << _month << "/" << _day << endl;
+		return output;
+	}
 	//得到某一月天数
 	static int GetMonthDay(int year, int month) {
 		//平年
@@ -72,7 +76,7 @@ public:
 	//日期之差
 	int operator-(const Date& d);
 	//	==
-	bool operator==(const Date& d);
+	bool operator==(const Date& d) const;
 	bool operator!=(const Date& d);
 	//	>
 	bool operator>(const Date& d);
@@ -80,11 +84,21 @@ public:
 	bool operator<(const Date& d);
 	bool operator<=(const Date& d);
 
-//private:
+	/*Date* operator&() {
+		cout << "Date* operator&()" << endl;
+		return this;
+	}*/
+	//const Date* operator&() const {
+	//	cout << "Date* operator&() const " << endl;
+	//	return this;
+	//}
+private:
 	int _year;
 	int _month;
 	int _day;
 };
+
+
 
 //全局变量和全局函数定义在头文件对于多个源文件会形成重定义,报链接错误
 // 全局变量和全局函数都会进符号表，源文件都包含了头文件，在预处理阶段展开
