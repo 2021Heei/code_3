@@ -1447,3 +1447,63 @@ using namespace std;
 //	cout << "ret2: " << ret2 << endl;
 //	return 0;
 //}
+
+
+class Date {
+public:
+	friend bool operator==(const Date& d1, const Date& d2);
+	friend bool operator==(const Date& d1, const Date& d2);
+	friend bool operator==(const Date& d1, const Date& d2);
+	friend bool operator==(const Date& d1, const Date& d2);
+	friend bool operator==(const Date& d1, const Date& d2);
+	Date(int year = 1, int month = 1, int day = 1) {
+		_year = year;
+		_month = month;
+		_day = day;
+	}
+	Date(const Date& d) {
+		_year = d._year;
+		_month = d._month;
+		_day = d._day;
+	}
+	////GetYear(Date* const this)
+	//int GetYear() {
+	//	return this->_year;
+	//}
+	//int GetMonth() {
+	//	return this->_month;
+	//}
+	//int GetDay() {
+	//	return this->_day;
+	//}
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+//bool operator==(Date& d1, Date& d2) {
+//	//d1.GetYear(&d1);  &d1 --> const Date*  -->(权限放大) Date* const
+//	return d1.GetYear() == d2.GetYear() &&
+//		d1.GetMonth() == d2.GetMonth() &&
+//		d1.GetDay() == d2.GetDay();
+//}
+
+bool operator==(const Date& d1, const Date& d2) {
+	return d1._year == d2._year &&
+		d1._month == d2._month &&
+		d1._day == d2._day;
+}
+
+int main() {
+	Date d3(2022, 11, 12);
+	Date d4(2022, 11, 12);
+	cout << (d3 == d4) << endl;
+	/*Date& d3 = d1;
+	const Date& d4 = d1;
+	Date* p1 = &d1;
+	Date* p3 = &d3;
+	const Date* p4 = &d4;*/
+
+	return 0;
+}

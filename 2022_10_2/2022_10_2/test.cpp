@@ -1457,16 +1457,16 @@
 //	bool operator>=(const Date& d) {
 //		return this->operator>(d) || this->operator==(d);
 //	}
-//	//得到某一月天数
-//	static int GetDay(int year, int month) {
-//		//平年
-//		int array[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
-//		//特殊处理闰年2月
-//		if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) && month == 2) {
-//			return 29;
-//		}
-//		return array[month];
-//	}
+	////得到某一月天数
+	//static int GetDay(int year, int month) {
+	//	//平年
+	//	int array[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	//	//特殊处理闰年2月
+	//	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) && month == 2) {
+	//		return 29;
+	//	}
+	//	return array[month];
+	//}
 //	//d1+d2
 //	Date operator+(int day) {
 //		Date cur(*this);
@@ -1559,6 +1559,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //	10-10
+
+
 
 
 
