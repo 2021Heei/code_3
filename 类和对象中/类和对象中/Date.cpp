@@ -1,6 +1,6 @@
 #include "Date.h"
 
-Date Date::operator+(int day) {
+Date Date::operator+(int day) const {
 	Date cur(*this);
 	cur += day;
 	return cur;
@@ -43,14 +43,14 @@ Date& Date::operator-=(int day) {
 	return *this;
 }
 
-Date Date::operator-(int day) {
+Date Date::operator-(int day) const {
 	Date cur(*this);
 	cur -= day;
 	return cur;
 }
 //日期之差
 //d1.operator-(d2) --> d1 - d2
-int Date::operator-(const Date& d) {
+int Date::operator-(const Date& d) const {
 	//小日期逐渐趋近大日期，同时计数
 	//1.找大小日期
 	Date max(*this);
@@ -105,16 +105,16 @@ Date Date::operator--(int) {
 
 
 
-bool Date::operator==(const Date& d)const {
+bool Date::operator==(const Date& d) const {
 	return _year == d._year
 		&& _month == d._month
 		&& _day == d._day;
 }
-bool Date::operator!=(const Date& d) {
+bool Date::operator!=(const Date& d) const {
 	return !(*this == d);
 }
 //	>
-bool Date::operator>(const Date& d) {
+bool Date::operator>(const Date& d) const {
 	if (_year > d._year) {
 		return true;
 	}
@@ -126,13 +126,13 @@ bool Date::operator>(const Date& d) {
 	}
 	return false;
 }
-bool Date::operator>=(const Date& d) {
+bool Date::operator>=(const Date& d) const {
 	return (*this > d) || (*this == d);
 }
-bool Date::operator<(const Date& d) {
+bool Date::operator<(const Date& d) const {
 	return !(*this >= d);
 }
-bool Date::operator<=(const Date& d) {
+bool Date::operator<=(const Date& d) const {
 	return !(*this > d);
 }
 ////d1.operator>>(cin); -->	d1 << cin ??

@@ -7,10 +7,6 @@ class Date {
 public:
 	friend istream& operator>>(istream& input, Date& d);
 	friend ostream& operator<<(ostream& output, const Date& d);
-	ostream& operator<<(ostream& output) {
-		output << _year << "/" << _month << "/" << _day << endl;
-		return output;
-	}
 	//得到某一月天数
 	static int GetMonthDay(int year, int month) {
 		//平年
@@ -61,10 +57,10 @@ public:
 	//+day
 	//AddDay()
 	//JiaTian()
-	Date operator+(int day);
+	Date operator+(int day) const;
 	Date& operator+=(int day);
 	Date& operator-=(int day);
-	Date operator-(int day);
+	Date operator-(int day) const;
 	//前置++
 	Date& operator++();//	d1.operator++()
 	//后置++
@@ -74,15 +70,15 @@ public:
 	//后置--
 	Date operator--(int);
 	//日期之差
-	int operator-(const Date& d);
+	int operator-(const Date& d) const;
 	//	==
 	bool operator==(const Date& d) const;
-	bool operator!=(const Date& d);
+	bool operator!=(const Date& d) const;
 	//	>
-	bool operator>(const Date& d);
-	bool operator>=(const Date& d);
-	bool operator<(const Date& d);
-	bool operator<=(const Date& d);
+	bool operator>(const Date& d) const;
+	bool operator>=(const Date& d) const;
+	bool operator<(const Date& d) const;
+	bool operator<=(const Date& d) const;
 
 	/*Date* operator&() {
 		cout << "Date* operator&()" << endl;
@@ -108,9 +104,9 @@ private:
 //void Func() {
 //	;
 //}
-
+//
 //int a = 10;
-
+//
 //解决办法：
 //1.static修饰，
 //改变修饰对象的声明周期，同时使其的链接属性变为静态，只在本文件中使用，其他文件无法使用
@@ -118,11 +114,11 @@ private:
 //static void Func() {
 //	;
 //}
-
+//
 //2.声明和定义分离，声明在头文件，定义在某个源文件
 //.h  -> void Func();
 //.cpp -> void Func(){ ; }
-
+//
 //3.定义为内联函数，也不进符号表
 //inline void Func() {
 //	;
