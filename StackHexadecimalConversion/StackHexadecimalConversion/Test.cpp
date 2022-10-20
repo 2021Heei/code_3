@@ -1,6 +1,19 @@
 #include "Stack.h"
+char* HexConversion(int n, int d);
 
-char* HexadecimalConversion(int n, int d) {
+int main() {
+
+	int N, d;
+	printf("请输入整数N和d>\n");
+	scanf("%d %d", &N, &d);
+	char* ret = HexConversion(N, d);
+	printf("ret: %s\n", ret);
+	free(ret);
+	ret = NULL;
+	return 0;
+}
+
+char* HexConversion(int n, int d) {
 	Stack st;
 	StackInit(&st);
 	while (n) {
@@ -8,7 +21,8 @@ char* HexadecimalConversion(int n, int d) {
 		StackPush(&st, ch);
 		n /= d;
 	}
-	char* ret = (char*)malloc(sizeof(char) * st.top);
+	char* ret = (char*)malloc(sizeof(char) * (st.top+1));
+	ret[st.top] = '\0';
 	int i = 0;
 	while (!StackEmpty(&st)) {
 		ret[i++] = StackTop(&st);
@@ -18,15 +32,3 @@ char* HexadecimalConversion(int n, int d) {
 	StackDestroy(&st);
 	return ret;
 }
-
-int main() {
-
-	int n, d;
-	scanf("%d %d", &n, &d);
-	char* ret = HexadecimalConversion(n, d);
-	printf("ret: %s\n", ret);
-	free(ret);
-	ret = NULL;
-	return 0;
-}
-
