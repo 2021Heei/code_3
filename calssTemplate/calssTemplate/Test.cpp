@@ -1,9 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-
-#include <iostream>
-#include <cassert>
-#include <cassert>
-using namespace std;
+#include "Stack.h"
+//#include <iostream>
+//#include <cassert>
+//#include <cassert>
+//using namespace std;
 
 //void Swap(int& a, int& b) {
 //	int tmp = a;
@@ -180,47 +180,202 @@ using namespace std;
 
 //类模板
 
-typedef int STDataType;
-class Stack {
-public:
-	Stack(int capacity = 4)
-		:_size(0)
-		, _capacity(capacity) {
-		_a = (STDataType*)malloc(sizeof(STDataType)*_capacity);
-		assert(_a);
-	}
+//typedef int STDataType;
+//class Stack {
+//public:
+//	Stack(int capacity = 4)
+//		:_size(0)
+//		, _capacity(capacity) {
+//		_a = (STDataType*)malloc(sizeof(STDataType)*_capacity);
+//		assert(_a);
+//	}
+//
+//	~Stack() {
+//		delete[] _a;
+//		_size = _capacity = 0;
+//	}
+//
+//	void Push(int val) {
+//		if (_size == _capacity) {
+//			_capacity = _capacity * 2;
+//			STDataType* tmp = (STDataType*)realloc(_a, sizeof(STDataType) * _capacity);
+//			assert(tmp);
+//			_a = tmp;
+//		}
+//		_a[_size++] = val;
+//
+//	}
+//private:
+//	STDataType* _a;
+//	int _size;
+//	int _capacity;
+//};
+//
+//int main() {
+//	Stack st1;
+//	st1.Push(1);
+//	st1.Push(2);
+//	st1.Push(3);
+//
+//	Stack st2;
+//	st2.Push(1.1);
+//	st2.Push(2.1);
+//	st2.Push(3.1);
+//	return 0;
+//}
+// 
 
-	~Stack() {
-		delete[] _a;
-		_size = _capacity = 0;
-	}
+//解决typedef和宏遇到的问题
+//template<typename T>
+//class Stack {
+//public:
+//	Stack(int capacity = 4)
+//		:_size(0)
+//		, _capacity(capacity) {
+//		_a = (T*)malloc(sizeof(T) * _capacity);
+//		assert(_a);
+//	}
+//
+//	~Stack() {
+//		delete[] _a;
+//		_size = _capacity = 0;
+//	}
+//
+//	void Push(const T& val) {
+//		if (_size == _capacity) {
+//			_capacity = _capacity * 2;
+//			T* tmp = (T*)realloc(_a, sizeof(T) * _capacity);
+//			assert(tmp);
+//			_a = tmp;
+//		}
+//		_a[_size++] = val;
+//
+//	}
+//private:
+//	T* _a;
+//	int _size;
+//	int _capacity;
+//};
+//
+////类模板一般没有推演时机，这与函数模板通过实参推演模板参数不同
+////模板参数不同，同一类模板实例化出来的多个类的类型就各不相同
+//int main() {
+//	Stack<int> st1;
+//	st1.Push(1);
+//	st1.Push(2);
+//
+//	Stack<double> st2;
+//	st2.Push(1.1);
+//	st2.Push(2.1);
+//	//是完全不同的类型，不存在隐式类型转换
+//	//st2 = st1;//error
+//	return 0;
+//}
 
-	void Push(int val) {
-		if (_size == _capacity) {
-			_capacity = _capacity * 2;
-			STDataType* tmp = (STDataType*)realloc(_a, sizeof(STDataType) * _capacity);
-			assert(tmp);
-			_a = tmp;
-		}
-		_a[_size++] = val;
+//template有范围
 
-	}
-private:
-	STDataType* _a;
-	int _size;
-	int _capacity;
-};
 
+//练习
+//#define N 10
+
+//template<typename T>
+//class Array {
+//public:
+//	T& operator[](size_t i) {
+//		//编译器对数组下标越界的检查是抽查，在数组边界写容易检查出来，远离数组边界的越界写不容易检查出来；在数组边界读和远离数组边界读基本不被检查出来
+//		//可以主动进行强制检查，防止数组下边越界
+//
+//		assert(i < 10);
+//		return _a[i];
+//	}
+//private:
+//	T _a[N];
+//};
+
+//定义在命名空间中，防止和库里面的类名冲突
+//namespace weihe {
+//	template<typename T>
+//	class Array {
+//	public:
+//		T& operator[](size_t i) {
+//			//编译器对数组下标越界的检查是抽查，在数组边界写容易检查出来，远离数组边界的越界写不容易检查出来；在数组边界读和远离数组边界读基本不被检查出来
+//			//可以主动进行强制检查，防止数组下边越界
+//
+//			assert(i < 10);
+//			return _a[i];
+//		}
+//	private:
+//		T _a[N];
+//	};
+//}
+
+//int main() {
+//	weihe::Array<int> a;
+//	for (int i = 0; i < 10; ++i) {
+//		a[i] = i;
+//	}
+//	for (int i = 0; i < 10; ++i) {
+//		cout << a[i] << " ";
+//	}
+//	cout << endl;
+//	for (int i = 0; i < 10; ++i) {
+//		a[i] *= 10;
+//	}
+//	for (int i = 0; i < 10; ++i) {
+//		cout << a[i] << " ";
+//	}
+//	cout << endl;
+//
+//	//a[10];
+//	//a[20] = 1;
+//	return 0;
+//}
+
+//名字冲突问题解决思路
+//命名空间的作用
+
+
+//注意：模板一般不分离编译（声明和定义分离A）
+
+//template<typename T>
+//class Stack {
+//public:
+//	Stack(int capacity = 4)
+//		:_size(0)
+//		, _capacity(capacity) {
+//		_a = (T*)malloc(sizeof(T) * _capacity);
+//		assert(_a);
+//	}
+//
+//	~Stack() {
+//		delete[] _a;
+//		_size = _capacity = 0;
+//	}
+//
+//	void Push(const T& val) {
+//		if (_size == _capacity) {
+//			_capacity = _capacity * 2;
+//			T* tmp = (T*)realloc(_a, sizeof(T) * _capacity);
+//			assert(tmp);
+//			_a = tmp;
+//		}
+//		_a[_size++] = val;
+//
+//	}
+//private:
+//	T* _a;
+//	int _size;
+//	int _capacity;
+//};
+
+//类模板一般没有推演时机，这与函数模板通过实参推演模板参数不同
+//模板参数不同，同一类模板实例化出来的多个类的类型就各不相同
 int main() {
-	Stack st1;
+	//Stack<int> 与Stack<double>是不同的类型
+	Stack<int> st1;
 	st1.Push(1);
-	st1.Push(2);
-	st1.Push(3);
 
-	Stack st2;
+	Stack<double> st2;
 	st2.Push(1.1);
-	st2.Push(2.1);
-	st2.Push(3.1);
 	return 0;
 }
-
