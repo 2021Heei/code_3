@@ -4,7 +4,7 @@
 //#include <cassert>
 //#include <cassert>
 //using namespace std;
-
+//
 //void Swap(int& a, int& b) {
 //	int tmp = a;
 //	a = b;
@@ -42,7 +42,7 @@
 //	t2 = tmp;
 //}
 // 
-
+//
 ////函数模板
 //template<typename T>
 //void Swap(T& t1, T& t2) {
@@ -93,11 +93,11 @@
 //T Add(const T& t1, const T& t2) {
 //	return t1 + t2;
 //}
-
+//
 //T Add(T& t1, T& t2) {
 //	return t1 + t2;
 //}
-
+//
 //int main() {
 //	int a = 1, b = 2;
 //	double c = 3.14, d = 9.99;
@@ -282,8 +282,8 @@
 //class Array {
 //public:
 //	T& operator[](size_t i) {
-//		//编译器对数组下标越界的检查是抽查，在数组边界写容易检查出来，远离数组边界的越界写不容易检查出来；在数组边界读和远离数组边界读基本不被检查出来
-//		//可以主动进行强制检查，防止数组下边越界
+		/*编译器对数组下标越界的检查是抽查，在数组边界写容易检查出来，远离数组边界的越界写不容易检查出来；在数组边界读和远离数组边界读基本不被检查出来
+		可以主动进行强制检查，防止数组下边越界*/
 //
 //		assert(i < 10);
 //		return _a[i];
@@ -370,12 +370,12 @@
 
 //类模板一般没有推演时机，这与函数模板通过实参推演模板参数不同
 //模板参数不同，同一类模板实例化出来的多个类的类型就各不相同
-int main() {
-	//Stack<int> 与Stack<double>是不同的类型
-	Stack<int> st1;
-	st1.Push(1);
-
-	Stack<double> st2;
-	st2.Push(1.1);
-	return 0;
-}
+//int main() {
+//	//Stack<int> 与Stack<double>是不同的类型
+//	Stack<int> st1;
+//	st1.Push(1);
+//
+//	Stack<double> st2;
+//	st2.Push(1.1);
+//	return 0;
+//}
