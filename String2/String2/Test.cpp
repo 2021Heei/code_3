@@ -193,11 +193,230 @@ void test3() {
 //看功能
 //函数只读，实现const版本
 //函数只写，实现非const版本
-//汉纳树可读可写，实现const+非const版本
+//函数可读可写，实现const+非const版本
 
-int main() {
-	//test1();
-	//test2();
-	test3();
-	return 0;
+
+//
+void test4() {
+	string s1("hello world");
+	cout << s1.size() << endl;
+	//关于length与size历史的解释
+	//string类早于STL的出现，STL里也有一个string
+	//C++标准库把STL加进来时没有要STL里的string，而是沿用的原来的string
+	//原本string类实现中有表示有效字符个数的length()，
+	//而STL里相同功能的是size()，所以原string类增加了size()，与STL保持一致
+	//并且size()从字面意思上在STL中更加通用，比length()
+	//也只有string类中有length()，STL中其他容器并没有length()，只有size(),这足够了
+	//
+	cout << s1.length() << endl;
+
+	cout << s1.capacity() << endl;
+	//像max_size()这样使用不多，比较鸡肋的函数设计，一般不会被删除，因为C++语法是向前兼容的，
+	cout << s1.max_size() << endl;
+
+	/*string ss;
+	cout << ss.max_size() << endl;*/
+
+	string s2("hello world");
+	cout << s2 << endl;
+	cout << s2.capacity() << endl;
+	//clear()是否清理空间呢？
+	//这是标准未定义的，可能清，也可能不清，这是没有影响的
+	s2.clear();
+	cout << s2 << endl;
+	cout << s2.capacity() << endl;
+	if (!s2.empty()) {
+		cout << s2 << endl;
+	}
+	else {
+		cout << "s2是空串" << endl;
+	}
+	
+	string s3(100, '#');
+	cout << "1: " << s3.capacity() << endl;
+	//s3.clear();
+	s3.resize(5);
+	cout << "2: " << s3.capacity() << endl;
+	s3.shrink_to_fit();
+	cout << "3: " << s3.capacity() << endl;
 }
+
+void TestPushBack() {
+	string s;
+	//扩容是有开销的，
+	//当我们直到大概需要的空间时，我们可以提前开辟reserve一个接近的大小，减少扩容次数，提高效率
+	//注意与reverse区分
+	//s.reserve(1000);
+	size_t sz = s.capacity();
+	cout << "initcapacity: " << sz << endl;
+	for (int i = 0; i < 1000; ++i) {
+		s.push_back('#');
+		if (sz != s.capacity()) {
+			sz = s.capacity();
+			cout << "newcapacity: " << sz << endl;
+		}
+	}
+}
+
+//reserve
+void test5() {
+	//不同编译器的扩容实现有差别
+	//g++严格2倍
+	//vs大致1.5倍
+	TestPushBack();
+
+	string s1("hello world!");
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+	s1.reserve(5);
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+}
+
+//resize
+void test6() {
+	//分为3种情况
+	//resize<size，删除数据
+	//resize>size && resize<capacity，可以指定size之后的字符，默认时'\0'，插入数据
+	//resize>capacity，扩容+插入数据
+	string s1("hello world!");
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl;
+	s1.resize(5);
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	cout << s1.capacity() << endl << endl;
+
+	string s2("hello world!");
+	cout << s2 << endl;
+	cout << s2.size() << endl;
+	cout << s2.capacity() << endl;
+	s2.resize(15);
+	//s2.resize(15, '#');
+	cout << s2 << endl;
+	cout << s2.size() << endl;
+	cout << s2.capacity() << endl << endl;
+
+	string s3("hello world!");
+	cout << s3 << endl;
+	cout << s3.size() << endl;
+	cout << s3.capacity() << endl;
+	s3.resize(25);
+	//s3.resize(25, '#');
+	cout << s3 << endl;
+	cout << s3.size() << endl;
+	cout << s3.capacity() << endl << endl;
+}
+
+void test7() {
+	string s1("hello world");
+	for (int i = 0; i < s1.size(); ++i) {
+		cout << s1[i] << " ";
+		//s1[100];//断言报错
+	}
+	cout << endl;
+
+	for (int i = 0; i < s1.size(); ++i) {
+		cout << s1.at(i) << " ";
+		//s1.at(100);//抛异常
+	}
+	cout << endl;
+}
+
+//modify
+void test8() {
+	string s1("hello world!");
+	s1.push_back('1');
+	s1.push_back('2');
+	s1.push_back('3');
+	cout << s1 << endl << endl;
+
+	string s2("hello world!");
+	s2.append("12345");
+	cout << s2 << endl;
+	string tmp("abcde");
+	s2.append(tmp);
+	cout << s2 << endl;
+	s2.append("12345", 3);
+	cout << s2 << endl <<endl;
+
+	string s3("hello world");
+	s3 += '#';
+	cout << s3 << endl;
+	s3 += "12345";
+	cout << s3 << endl;
+	s3 += tmp;
+	cout << s3 << endl << endl;
+
+	string s4("hello world");
+	s4.assign("12345123451234512345");
+	cout << s4 << endl;
+	cout << s4.size() << endl;
+	cout << s4.capacity() << endl;
+	s4.assign(tmp);
+	cout << s4 << endl;
+	cout << s4.size() << endl;
+	cout << s4.capacity() << endl << endl;
+
+	//insert和erase 往往会挪动大量数据，时间复杂度高，效率低，所以使用并不多
+	string s5("hello world");
+	//insert的pos无效范围会抛异常
+	/*cout << s5.size() << endl;
+	cout << s5.capacity() << endl;*/
+	/*s5.insert(5, "#####");
+	cout << s5 << endl;*/
+	s5.insert(5, "#####", 3);
+	cout << s5 << endl;
+	/*s5.insert(5, tmp);
+	cout << s5 << endl;*/
+	s5.insert(5, tmp, 2, 3);
+	cout << s5 << endl << endl;
+	/*cout << s5.size() << endl;
+	cout << s5.capacity() << endl;*/
+
+	string s6("hello world");
+	cout << s4.size() << endl;
+	cout << s4.capacity() << endl << endl;
+	s6.erase(5, 3);
+	cout << s6 << endl;
+	s6.erase(2);
+	cout << s6 << endl;
+	cout << s4.size() << endl;
+	cout << s4.capacity() << endl << endl;
+
+	string s7("hello world");
+	/*s7.replace(6, 5, "weihe");
+	cout << s7 << endl;*/
+	s7.replace(6, 3, "weihexxxxxxxxx", 3, 9);
+	cout << s7 << endl;
+	/*s7.replace(6, 5, tmp);
+	cout << s7 << endl;*/
+	s7.replace(6, 3, tmp, 2, 4);
+	cout << s7 << endl;
+	s7.replace(6, 3, 10, '#');
+	cout << s7 << endl << endl;
+
+	string s8("hello world");
+	string s9("abcde");
+	cout << "前" << s8 << endl;
+	cout << "前" << s9 << endl;
+	s8.swap(s9);
+	cout << "后" << s8 << endl;
+	cout << "后" << s9 << endl << endl;
+
+	string s("weihe");
+	cout << s.c_str() << endl;
+}
+
+//int main() {
+//	//test1();
+//	//test2();
+//	//test3();
+//	//test4();
+//	//test5();
+//	//test6();
+//	//test7();
+//	test8();
+//	return 0;
+//}
