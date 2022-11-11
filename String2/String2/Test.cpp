@@ -1,8 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS 1
+//string库函数使用
 #include <iostream>
 #include <string>
 #include <vector>
 #include <list>
+#include <cassert>
 using namespace std;
 
 //int main() {
@@ -80,6 +82,10 @@ void test1() {
 	//超过了字符串长度，则只拷贝到字符串结束
 	string s9("hello world!", 2);
 	cout << s9 << endl;
+	
+	string s10("hello world!");
+	string s11(s10.begin(), s10.begin() + 5);
+	cout << s11 << endl;
 }
 
 void test2() {
@@ -87,6 +93,7 @@ void test2() {
 	string s1("12345");
 	//下标
 	//只支持string和vector，不通用
+	//'\0'是标识字符，不是有效字符，size()和length()不统计'\0'
 	for (size_t i = 0; i < s1.size(); ++i) {
 		//s1.operator[](i)++;
 		s1[i]++;
@@ -221,7 +228,7 @@ void test4() {
 	cout << s2 << endl;
 	cout << s2.capacity() << endl;
 	//clear()是否清理空间呢？
-	//这是标准未定义的，可能清，也可能不清，这是没有影响的
+	//这是标准未定义的，可能清，也可能不清，这是没有影响的，一般不清空间
 	s2.clear();
 	cout << s2 << endl;
 	cout << s2.capacity() << endl;
@@ -405,11 +412,112 @@ void test8() {
 	cout << "后" << s8 << endl;
 	cout << "后" << s9 << endl << endl;
 
+
+	//%20替换空格
+	//法1，顺序替换，效率低
+	string ss("hello world x ? !");
+	size_t pos = ss.find(' ');
+	while (pos != string::npos) {
+		ss.replace(pos, 1, "%20");
+		pos = ss.find(' ', pos + 3);
+	}
+	cout << ss << endl;
+	
+	//法2，额外空间，一次遍历
+	string sss("hello world ! ! !");
+	string tmp2;
+	//增加一次遍历，是先确定空格个数，以便直接开好空间，不再扩容
+	int cnt = 0;
+	for (auto ch : sss) {
+		if (ch == ' ') {
+			cnt++;
+		}
+	}
+	tmp2.resize(sss.size() + 2 * cnt);
+	for (int i = 0; i < sss.size(); i++) {
+		if (sss[i] != ' ') {
+			tmp2 += sss[i];
+		}
+		else {
+			tmp2 += "%20";
+		}
+	}
+	sss.assign(tmp2);
+	cout << sss << endl;
+
+	//C形式的字符串
 	string s("weihe");
 	cout << s.c_str() << endl;
+
+	string file("Test.cpp");
+	FILE* pf = fopen(file.c_str(), "r");
+	assert(pf);
+	char ch = fgetc(pf);
+	while (ch != EOF) {
+		cout << ch;
+		ch = fgetc(pf);
+	}
+	cout << endl;
+	fclose(pf);
+}
+
+//assign 和
+void test9() {
+	string s1("hello world!");
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	s1.assign("worldxxxxxxxxxhello");
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+	s1.assign("worldx");
+	cout << s1 << endl;
+	cout << s1.size() << endl;
+}
+
+void test10() {
+	string s1;
+	cin >> s1;
+	//size_t pos = s1.find('.');
+	size_t pos = s1.rfind('.');
+	if (pos != string::npos) {
+		//cout << s1.substr(pos, s1.size() - pos) << endl;
+		cout << s1.substr(pos) << endl;
+	}
+
+	string s2("Please, replace the vowels in this sentence by asterisks.");
+	cout << s2 << endl;
+	pos = s2.find_first_of("aeiou");
+	while (pos != string::npos) {
+		s2[pos] = '*';
+		pos = s2.find_first_of("aeiou");
+	}
+	cout << s2 << endl;
+}
+
+//比较大小(非string成员函数)
+void test11() {
+
+}
+
+int StrToInt(string str) {
+	int num = 0;
+	int flag = 1;
+	for (int i = 0; i < str.size(); ++i) {
+		if (i == 0 && str[i] == '-') {
+			flag = -1;
+		}
+		else if (isdigit(str[i])) {
+			num = num * 10 + str[i] - '0';
+		}
+		else {
+			return 0;
+		}
+	}
+	return num * flag;
 }
 
 //int main() {
+//	StrToInt("+1231223123");
 //	//test1();
 //	//test2();
 //	//test3();
@@ -417,6 +525,18 @@ void test8() {
 //	//test5();
 //	//test6();
 //	//test7();
-//	test8();
+//	//test8();
+//	//test9();
+//	//test10();
+//	//TestPushBack();
 //	return 0;
 //}
+
+#include "string模拟.h"
+
+int main() {
+
+	//test1_string();
+	test2_string();
+	return 0;
+}
