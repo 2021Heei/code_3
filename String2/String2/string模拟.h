@@ -168,13 +168,18 @@ namespace weihe {
 			}
 
 			//hello world xxxxx
-			//hello 
+			//hello
+			/*int end = _size;
+			while (end >= (int)pos) {
+				_str[end + len] = _str[end];
+				end--;
+			}*/
 			/*size_t end = _size + len+1;
 			while (end > pos+len) {
 				_str[end-1] = _str[end - len-1];
 				end--;
-			}
-			memcpy(_str + pos, str, len);
+			}*/
+			/*memcpy(_str + pos, str, len);
 			_size += len;*/
 
 			size_t end = _size + len;
@@ -185,12 +190,40 @@ namespace weihe {
 			memcpy(_str + pos, str, len);
 			_size += len;
 		}
+		//删除
+		//hello world\0
+		string& erase(size_t pos, size_t len = npos) {
+			assert(pos < _size);
+			if (pos + len >= _size || len == npos) {
+				_str[pos] = '\0';
+				_size = pos;
+			}
+			else {
+				strcpy(_str + pos, _str + pos + len);
+				_size -= len;
+			}
+			return *this;
+		}
 	private:
 		char* _str;
 		size_t _size;
 		size_t _capacity;
-	};
 
+		//const修饰静态成员一般来说需要在类内声明，然后在类外进行初始化
+		//不过这里有一个特例，针对整型家族（char,short,int,long,long long），可以对静态整型成员直接在类内进行初始化，这样支持的其中一个用法是定义固定大小的数组成员
+		// 对于非const静态成员变量，必须在类外进行定义，包括整型；
+		//const static int N = 100;
+		//int arr[N];
+
+		const static int npos = -1;
+		
+		/*const static char n = -1;
+		const static short n = -1;
+		const static long n = -1;
+		const static long long n = -1;*/
+		//const static double d = 3.14;//error
+	};
+	//const static string::d = 3.14;
 
 	void test1_string() {
 		weihe::string s1("hello world");
@@ -297,6 +330,24 @@ namespace weihe {
 		weihe::string s3("hello world");
 		s3.insert(0, 3, 'x');
 		cout << s3.c_str() << endl;
+
+		weihe::string s4("hello world");
+		s4.insert(0, "xxxxx ");
+		cout << s4.c_str() << endl;
+
+
+		//删除erase
+		string s5("hello world");
+		s5.erase(5, 4);
+		cout << s5.c_str() <<endl;
+
+		string s6("hello world");
+		s6.erase(0, 6);
+		cout << s6.c_str() << endl;
+
+		string s7("hello world");
+		s7.erase(5);
+		cout << s7.c_str() << endl;
 	}
 }
 
