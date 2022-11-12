@@ -536,7 +536,9 @@ int StrToInt(string str) {
 
 int main() {
 
-	//test1_string();
-	test2_string();
+	//weihe::test1_string();
+	//weihe::test2_string();
+	//weihe::test3_string();
+	weihe::test4_string();
 	return 0;
 }
