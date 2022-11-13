@@ -7,6 +7,26 @@ using namespace std;
 
 namespace weihe {
 	
+	const char* mystrstr(const char* str, const char* substr) {
+		assert(str && substr);
+		const char* pstr = str;
+		const char* flag = str;
+		const char* psubstr = substr;
+		while (*flag != '\0') {
+			pstr = flag;
+			while (*pstr != '\0' && *psubstr != '\0' && *pstr == *psubstr) {
+				pstr++;
+				psubstr++;
+			}
+			if (*psubstr == '\0') {
+				return flag;
+			}
+			psubstr = substr;
+			flag++;
+		}
+		return nullptr;
+	}
+
 	class string {
 	public:
 		typedef char* iterator;
@@ -69,13 +89,29 @@ namespace weihe {
 			return _str;
 		}
 
-		//设置大小，扩容
+		//扩容
 		void reserve(size_t n) {
-			char* tmp = new char[n + 1];
-			strcpy(tmp, _str);
-			delete[] _str;
-			_str = tmp;
-			_capacity = n;
+			//控制条件，只扩容，不缩容
+			//一般不缩容
+			if (n > _capacity) {
+				char* tmp = new char[n + 1];
+				strcpy(tmp, _str);
+				delete[] _str;
+				_str = tmp;
+				_capacity = n;
+			}
+		}
+		//设置大小
+		//hello world\0
+		void resize(size_t n, char ch = '\0') {
+			if (n > _size) {
+				reserve(n);
+				for (int i = _size; i <= n; ++i) {
+					_str[i] = ch;
+				}
+			}
+			_str[n] = '\0';
+			_size = n;
 		}
 		//插入数据
 		//尾插
@@ -96,6 +132,7 @@ namespace weihe {
 				reserve(_size + len);
 			}
 			strcat(_str, pstr);
+			_size += len;
 		}
 		//+=运算符重载
 		string& operator+=(const char ch) {
@@ -204,6 +241,29 @@ namespace weihe {
 			}
 			return *this;
 		}
+		//查找
+		// hello world
+		//查找字符
+		size_t find(const char ch, size_t pos) const{
+			assert(pos < _size);
+			for (int i = pos; i < _size; ++i) {
+				if (_str[i] == ch) {
+					return i;
+				}
+			}
+			return npos;
+		}
+		//查找字符串
+		size_t find(const char* str, size_t pos) const {
+			assert(pos < _size);
+			const char* p = strstr(_str + pos, str);
+			if (p == nullptr) {
+				return npos;
+			}
+			else {
+				return p - _str;
+			}
+		}
 	private:
 		char* _str;
 		size_t _size;
@@ -224,6 +284,42 @@ namespace weihe {
 		//const static double d = 3.14;//error
 	};
 	//const static string::d = 3.14;
+
+	//输出运算符重载
+	ostream& operator<<(ostream& out, const string& str) {
+		for (int i = 0; i < str.size(); ++i) {
+			out << str[i];
+		}
+		
+		return out;
+	}
+	//输入运算符重载
+	//读取字符到string对象，遇到空格或换行结束
+	istream& operator>>(istream& in, string& str) {
+		char ch;
+		in.get(ch);
+		//scanf,cin默认以空格字符作为读取间隔，默认略过空格字符和换行字符的读取
+		// 或者说遇到空格字符或换行字符就直接丢弃，并读取下一个字符
+		// 在C语言中我们使用getchar()函数来读取避免空格字符和换行字符被丢弃
+		// 在C++中我们使用cin的成员函数get()来读取避免空格字符和换行字符被丢弃
+		//in >> ch;
+		char buf[128] = { 0 };
+		size_t i = 0;
+		while (ch != ' ' && ch != '\n') {
+			if (i == 127) {
+				str += buf;
+				i = 0;
+			}
+			buf[i++] = ch;
+			//in >> ch;
+			in.get(ch);
+		}
+		if (i > 0) {
+			buf[i] = '\0';
+			str += buf;
+		}
+		return in;
+	}
 
 	void test1_string() {
 		weihe::string s1("hello world");
@@ -348,6 +444,44 @@ namespace weihe {
 		string s7("hello world");
 		s7.erase(5);
 		cout << s7.c_str() << endl;
+	}
+	//查找
+	void test5_string() {
+		string s1("hello world");
+		size_t ret1 = s1.find('w', 0);
+		cout << ret1 << endl;
+
+		string s2("hello worldd");
+		size_t ret2 = s2.find("world", 0);
+		cout << ret2 << endl;
+	}
+	//resize
+	void test6_string() {
+
+		string s1("hello world");
+		s1.resize(5, 'x');
+		cout << s1.size() << endl;
+		cout << s1.capacity() << endl;
+		cout << s1.c_str() << endl << endl;
+
+		string s2("hello world");
+		s2 += '!';
+		s2.resize(18, 'x');
+		cout << s2.size() << endl;
+		cout << s2.capacity() << endl;
+		cout << s2.c_str() << endl << endl;
+
+		string s3("hello world");
+		s3.resize(50, 'x');
+		cout << s3.size() << endl;
+		cout << s3.capacity() << endl;
+		cout << s3.c_str() << endl;
+	}
+
+	void test7_string() {
+		string s1;
+		cin >> s1;
+		cout << s1;
 	}
 }
 
