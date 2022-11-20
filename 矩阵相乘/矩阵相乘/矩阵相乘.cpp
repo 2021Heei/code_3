@@ -1,13 +1,4 @@
 //矩阵相乘
-/*
-*
-*
-*
-* 
-* 
-* 
-* 
-*/
 #include <iostream>
 #include <cstdlib>
 #include <cassert>
@@ -26,7 +17,8 @@ public:
 	TwoArray(TwoArray& a);
 	TwoArray(const TwoArray& a);
 	//*运算符重载
-	TwoArray operator+(TwoArray& a);
+	TwoArray operator*(TwoArray& a);
+	//赋值运算符重载
 	TwoArray& operator=(const TwoArray& a);
 
 	//得到某一元素
@@ -37,34 +29,25 @@ private:
 	int _col;
 };
 
+#define row1 3
+#define col1 3
+#define row2 3
+#define col2 3
 
 int main() {
-	int row1, row2, col1, col2;
-	//分别输入二维数组行和列
-	cout << "请输入第一个矩阵行row1和列col1(以空格分隔)>";
-	cin >> row1 >> col1;
-	cout << "请输入第二个矩阵行row2和列col2(以空格分隔)>";
-	cin >> row2 >> col2;
+	
+	printf("请输入第一个矩阵的元素%d * %d>", row1, col1);
+	TwoArray arr1(row1, col1);
+	cin >> arr1;
+	cout << arr1;
 
-	if (row1 == row2 && col1 == col2) {
+	printf("请输入第二个矩阵的元素%d * %d>", row2, col2);
+	TwoArray arr2(row2, col2);
+	cin >> arr2;
+	cout << arr2;
 
-		printf("请输入第一个矩阵的元素%d * %d>", row1, col1);
-		TwoArray arr1(row1, col1);
-		cin >> arr1;
-		cout << arr1;
-
-		printf("请输入第一个矩阵的元素%d * %d>", row2, col2);
-		TwoArray arr2(row2, col2);
-		cin >> arr2;
-		cout << arr2;
-
-		TwoArray ret = arr1 + arr2;//拷贝构造+拷贝构造  优化---> 拷贝构造
-		
-		cout << "结果 " << ret;
-	}
-	else {
-		cout << "输入的矩阵不能相加" << endl;
-	}
+	TwoArray ret = arr1 * arr2;//拷贝构造+拷贝构造  优化---> 拷贝构造
+	cout << ret;
 	return 0;
 }
 
@@ -157,9 +140,8 @@ ostream& operator<<(ostream& out, const TwoArray& a) {
 int& TwoArray::GetNum(int i, int j) {
 	return _p[i][j];
 }
-
-//+运算符重载
-TwoArray TwoArray::operator+(TwoArray& a) {
+//*运算符重载
+TwoArray TwoArray::operator*(TwoArray& a) {
 	//ret 结果类对象
 	TwoArray ret(_row, a._col);
 	//相乘
@@ -167,7 +149,12 @@ TwoArray TwoArray::operator+(TwoArray& a) {
 	for (int i = 0; i < ret._row; ++i) {
 		//ret._col
 		for (int j = 0; j < ret._col; ++j) {
-			ret.GetNum(i, j) = GetNum(i, j) + a.GetNum(i, j);
+			int sum = 0;
+			//_col或a._row，因为相乘：_col == a._row
+			for (int k = 0; k < _col; ++k) {
+				sum += GetNum(i, k) * a.GetNum(k, j);
+			}
+			ret.GetNum(i, j) = sum;
 		}
 	}
 	return ret;
