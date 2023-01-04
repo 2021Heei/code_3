@@ -1,4 +1,5 @@
 //#define _CRT_SECURE_NO_WARNINGS 1
+//#define _CRT_SECURE_NO_WARNINGS 1
 //
 //#include <iostream>
 //#include <cassert>
@@ -10,14 +11,13 @@
 //#define CAPACITY 10
 //
 //class Array {
-//	//输出运算符和输入运算符重载
 //	friend ostream& operator<<(ostream& out, const Array& arr);
 //	friend istream& operator>>(istream& in, Array& arr);
 //public:
 //	//构造
 //	Array()
 //		:_size(0)
-//		,_capacity(CAPACITY){
+//		, _capacity(CAPACITY) {
 //		_array = new int[_capacity];
 //		memset(_array, 0, sizeof(int) * CAPACITY);
 //	}
@@ -36,7 +36,7 @@
 //		_capacity = arr._capacity;
 //		return *this;
 //	}
-//	//+运算符重载
+//
 //	Array operator+(Array& arr) {
 //		Array cur(*this);
 //		for (int i = 0; i < CAPACITY; ++i) {
@@ -45,8 +45,8 @@
 //		cur._size = (cur._size > arr._size) ? cur._size : arr._size;
 //		return cur;
 //	}
-//	//[]运算符重载
-//	int& operator[](int i) const{
+//
+//	int& operator[](int i) const {
 //		assert(i >= 0 && i < _capacity);
 //		return _array[i];
 //	}
@@ -57,33 +57,10 @@
 //		_size = _capacity = 0;
 //	}
 //private:
-//	int* _array;//整型指针，指向一块连续空间的起始地址
-//	int _size;//数组的有效元素
-//	int _capacity;//数组的容量
+//	int* _array;
+//	int _size;
+//	int _capacity;
 //};
-//
-////初始化input.dat文件
-//void InitFile(const char* str);
-////从文件input.dat中读取数据到两个数组中
-//void InitArray(const char* str, Array& arr1, Array& arr2);
-////输出到文件output.dat中
-//void OutFile(const char* str, const Array& array);
-//
-//int main() {
-//	//初始化文件input.dat中的数据便于读取
-//	InitFile("input.dat");
-//	Array arr1;
-//	Array arr2;
-//	//文件初始化数组arr1,arr2
-//	InitArray("input.dat", arr1, arr2);
-//	//两个数组arr1和arr2相加
-//	Array arr3 = arr1 + arr2;
-//	cout << "数组arr1与arr2相加后的结果" << endl;
-//	OutFile("output.dat", arr3);
-//	cout << arr3 << endl;
-//	return 0;
-//}
-//
 //
 //ostream& operator<<(ostream& out, const Array& arr) {
 //	for (int i = 0; i < arr._capacity; ++i) {
@@ -100,15 +77,15 @@
 //	return in;
 //}
 //
-////输出到文件output.dat中
+////输出到文件
 //void OutFile(const char* str, const Array& array) {
 //	ofstream outfile(str, ios::out);
 //	if (!outfile) {
 //		cerr << str << " error" << endl;
 //		exit(-1);
 //	}
-//
-//	for (int i = 0; i < 10; ++i) {
+//	srand(time(0));
+//	for (int i = 0; i < 20; ++i) {
 //		outfile << array[i] << " ";
 //	}
 //	outfile.close();
@@ -132,15 +109,16 @@
 //	outfile.close();
 //}
 //
-////从文件input.dat中读取数据到两个数组中
-//void InitArray(const char* str, Array& arr1, Array& arr2) {
-//	ifstream infile(str, ios::in);
+//void InitArray(Array& arr1, Array& arr2) {
+//	InitFile("input.dat");
+//
+//	ifstream infile("input.dat", ios::in);
 //	if (!infile) {
 //		perror("infile");
-//		cerr << str << "error" << endl;
+//		cerr << "infile error" << endl;
 //		exit(-1);
 //	}
-//	cout << "从文件 " << str << " 中读取第一行数据到数组arr1中" << endl;
+//	cout << "从文件input.dat中读取第一行数据" << endl;
 //	char ch;
 //	for (int i = 0; i < 10; ++i) {
 //		ch = 0;
@@ -152,9 +130,8 @@
 //		arr1[i] = val;
 //	}
 //	infile.get(ch);
-//	cout << arr1 << endl;
 //
-//	cout << "从文件 " << str << " 中读取第二行数据到数组arr2中" << endl;
+//	cout << "从文件input.dat中读取第二行数据" << endl;
 //	for (int i = 0; i < 10; ++i) {
 //		ch = 0;
 //		int val = 0;
@@ -163,7 +140,22 @@
 //		}
 //		arr2[i] = val;
 //	}
-//	cout << arr2 << endl;
 //	infile.close();
 //
+//}
+//
+//int main() {
+//
+//	Array a1;
+//	Array a2;
+//	//文件初始化数组a1,a2
+//	InitArray(a1, a2);
+//	cout << a1 << endl;
+//	cout << a2 << endl;
+//	//两个数组a1和a2相加
+//	Array a3 = a1 + a2;
+//	cout << "数组a1与a2相加后的结果" << endl;
+//	OutFile("output.dat", a3);
+//	cout << a3 << endl;
+//	return 0;
 //}

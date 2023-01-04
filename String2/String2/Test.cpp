@@ -534,16 +534,16 @@ int StrToInt(string str) {
 
 #include "stringÄ£Äâ.h"
 
-int main() {
-
-	//weihe::test1_string();
-	//weihe::test2_string();
-	//weihe::test3_string();
-	//weihe::test4_string();
-	//weihe::test5_string();
-	//test6();
-	//cout << endl;
-	//weihe::test6_string();
-	weihe::test7_string();
-	return 0;
-}
+//int main() {
+//
+//	//weihe::test1_string();
+//	//weihe::test2_string();
+//	//weihe::test3_string();
+//	//weihe::test4_string();
+//	//weihe::test5_string();
+//	//test6();
+//	//cout << endl;
+//	//weihe::test6_string();
+//	weihe::test7_string();
+//	return 0;
+//}
