@@ -3,6 +3,7 @@
 #include <string>
 #include <cassert>
 using namespace std;
+
 void test01() {
 	string s1;
 	string s2("hello");
@@ -224,23 +225,20 @@ void test08() {
 	cout << s1.substr(3, 6) << endl;
 }
 
-class A {
-public:
-	friend A& operator+(int val, A& a);
-private:
-	int _a = 0;
-};
 
-A& operator+(int val, A& a) {
-	a._a += val;
-	return a;
-}
+
+#include "string.h"
+
 int main() {
-	//test06();
-	//test07();
-	//test08();
-	A aa;
-	//aa + 10;
-	10 + aa;
+	/*weihe::test01();
+	weihe::test02();
+	weihe::test03();*/
+	//weihe::test04();
+	//weihe::test05();
+	weihe::test06();
+
+	
 	return 0;
 }
+
+

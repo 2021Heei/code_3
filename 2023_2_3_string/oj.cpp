@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<iostream>
 #include <xstring>
+#include <vector>
 using namespace std;
 
 int main01() {
@@ -214,3 +215,34 @@ int main03() {
 	}
 	return 0;
 }
+
+int main04()
+{
+	int n;
+	int a1 = 1, a2 = 2;
+	cin >> n;
+	while (n--) {
+		int k;
+		cin >> k;
+		long long value = 0;
+		if (k == 1) value = 1;
+		else if (k == 2) value = 2;
+		else {
+			for (int i = 3; i <= k; i++) {
+				cout << value << endl;
+				value %= 32767;
+				a1 %= 32767;
+				a2 %= 32767;
+				value = 2 * a2 + a1;
+				a1 = a2;
+				a2 = value;
+			}
+		}
+		cout << value % 32767 << endl;
+
+
+	}
+	return 0;
+}
+
+
