@@ -235,8 +235,9 @@ int main() {
 	weihe::test03();*/
 	//weihe::test04();
 	//weihe::test05();
-	weihe::test06();
-
+	//weihe::test06();
+	//weihe::test07();
+	weihe::test08();
 	
 	return 0;
 }
