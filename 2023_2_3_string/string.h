@@ -7,11 +7,7 @@ namespace weihe {
 	public:
 		typedef char* iterator;
 		//ππ‘Ï
-		/*string() {
-			_str = new char[1];
-			_str[0] = '\0';
-			_size = _capacity = 0;
-		}*/
+		
 		string(const char* str = "") {
 			int len = strlen(str);
 			_size = len;

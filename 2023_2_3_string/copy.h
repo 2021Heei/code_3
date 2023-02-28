@@ -1,15 +1,11 @@
-namespace weihe {
+#pragma once
+
+namespace sjh {
 	class string {
 		friend istream& operator>>(istream& in, string& str);
 		friend ostream& operator<<(ostream& out, const string& str);
 	public:
 		typedef char* iterator;
-		//构造
-		/*string() {
-			_str = new char[1];
-			_str[0] = '\0';
-			_size = _capacity = 0;
-		}*/
 		string(const char* str = "") {
 			int len = strlen(str);
 			_size = len;
@@ -24,16 +20,6 @@ namespace weihe {
 			_size = _capacity = 0;
 		}
 
-		//拷贝构造 - 深拷贝 - 传统写法
-		/*string(const string& str) {
-			if (_str != str._str) {
-				_str = new char[str._capacity + 1];
-				strcpy(_str, str._str);
-				_size = str._size;
-				_capacity = str._capacity;
-
-			}
-		}*/
 		//拷贝构造 - 深拷贝 - 现代写法
 		string(const string& str)
 			:_str(nullptr), _size(0), _capacity(0) {
@@ -42,45 +28,14 @@ namespace weihe {
 				swap(tmp);
 			}
 		}
-		void swap(string& str) {
-			std::swap(_str, str._str);
-			std::swap(_size, str._size);
-			std::swap(_capacity, str._capacity);
-		}
-
-		//赋值运算符重载 - 传统写法
-		/*string& operator=(const string& str) {
-			if (this != &str) {
-				char* tmp = new char[str._capacity + 1];
-				strcpy(tmp, str._str);
-				delete[] _str;
-				_str = tmp;
-				_size = str._size;
-				_capacity = str._capacity;
-			}
-			return *this;
-		}*/
-
-		//赋值运算符重载 - 现代写法1
-		/*string& operator=(const string& str) {
-			if (this != &str) {
-				string tmp(str);
-				swap(tmp);
-			}
-			return *this;
-		}*/
 		//赋值运算符重载 - 现代写法2	
 		string& operator=(string str) {
 			swap(str);
 			return *this;
 		}
 
-		char& operator[](int pos) {
-			return _str[pos];
-		}
-		const char& operator[](int pos) const {
-			return _str[pos];
-		}
+		//////////////////////////////////////////
+		//iterator
 		iterator begin() {
 			return _str;
 		}
@@ -93,14 +48,9 @@ namespace weihe {
 		const iterator end()const {
 			return _str + _size;
 		}
-		//设置容量
-		void reserve(int newcapacity) {
-			char* tmp = new char[newcapacity + 1];
-			strcpy(tmp, _str);
-			delete[] _str;
-			_str = tmp;
-		}
 
+		//////////////////////////////////////////
+		//modify
 		void push_back(char ch) {
 			if (_size == _capacity) {
 				int newCapacity = _capacity == 0 ? 4 : _capacity * 2;
@@ -134,6 +84,121 @@ namespace weihe {
 			append(str);
 			return *this;
 		}
+
+
+		void swap(string& str) {
+			std::swap(_str, str._str);
+			std::swap(_size, str._size);
+			std::swap(_capacity, str._capacity);
+		}
+		const char* c_str() const {
+			return _str;
+		}
+		//////////////////////////////////////////
+		//capacity
+
+		//设置容量
+		void reserve(int newcapacity) {
+			char* tmp = new char[newcapacity + 1];
+			strcpy(tmp, _str);
+			delete[] _str;
+			_str = tmp;
+		}
+		void resize(size_t n, char ch = '\0') {
+			if (n > _size) {
+				reserve(n);
+				for (int i = _size; i < n; i++) {
+					_str[i] = ch;
+				}
+				_str[n] = '\0';
+				_size = n;
+				_capacity = n;
+			}
+			else {
+				_str[n] = '\0';
+				_size = n;
+			}
+		}
+		void clear() {
+			_size = 0;
+			_str[0] = '\0';
+		}
+
+		const int size() const {
+			return _size;
+		}
+		const int capacity() const {
+			return _capacity;
+		}
+		//////////////////////////////////////////
+		//access
+		char& operator[](int pos) {
+			return _str[pos];
+		}
+		const char& operator[](int pos) const {
+			return _str[pos];
+		}
+
+		//////////////////////////////////////////
+		//relational operators
+		bool operator<(const string& s) {
+			return strcmp(_str, s._str) < 0;
+		}
+
+		bool operator<=(const string& s) {
+			return (*this == s) || (*this < s);
+		}
+
+		bool operator>(const string& s) {
+			return strcmp(_str, s._str) > 0;
+		}
+
+		bool operator>=(const string& s) {
+			return (*this == s) || (*this > s);
+		}
+
+		bool operator==(const string& s) {
+			return strcmp(_str, s._str) == 0;
+		}
+
+		bool operator!=(const string& s) {
+			return !(*this == s);
+		}
+
+
+		// 返回c在string中第一次出现的位置
+		size_t find(char ch, size_t pos = 0) {
+			assert(pos < _size);
+			for (int i = pos; i < _size; i++) {
+				if (_str[i] == ch) {
+					return i;
+				}
+			}
+			return npos;
+		}
+		// 返回子串s在string中第一次出现的位置
+		size_t find(const char* s, size_t pos = 0) const {
+			assert(pos < _size);
+			//abccdef   ccdd
+			int i = pos;
+			int j = i;
+			int k = 0;
+			int len = strlen(s);
+			while (i < _size) {
+				j = i;
+				while (j < _size && k < len && _str[j] == s[k]) {
+					j++;
+					k++;
+				}
+				if (k == len) {
+					return i;
+				}
+				k = 0;
+				i++;
+			}
+			return npos;
+		}
+		// 在pos位置上插入字符c/字符串str，并返回该字符的位置
 		string& insert(size_t pos, char ch) {
 			assert(pos <= _size);
 			if (_size == _capacity) {
@@ -165,6 +230,7 @@ namespace weihe {
 			}
 			return *this;
 		}
+		// 删除pos位置上的元素，并返回该元素的下一个位置
 		string& erase(size_t pos, int len = npos) {
 			assert(pos < _size);
 			if (len == npos || pos + len >= _size) {
@@ -181,44 +247,6 @@ namespace weihe {
 
 			return *this;
 		}
-		size_t find(char ch, size_t pos = 0) {
-			assert(pos < _size);
-			for (int i = pos; i < _size; i++) {
-				if (_str[i] == ch) {
-					return i;
-				}
-			}
-			return npos;
-		}
-		void resize(size_t n, char ch = '\0') {
-			if (n > _size) {
-				reserve(n);
-				for (int i = _size; i < n; i++) {
-					_str[i] = ch;
-				}
-				_str[n] = '\0';
-				_size = n;
-				_capacity = n;
-			}
-			else {
-				_str[n] = '\0';
-				_size = n;
-			}
-		}
-		void clear() {
-			_size = 0;
-			_str[0] = '\0';
-		}
-		const char* c_str() const {
-			return _str;
-		}
-		const int size() const {
-			return _size;
-		}
-		const int capacity() const {
-			return _capacity;
-		}
-
 	private:
 		char* _str;
 		int _size;//大小
@@ -251,5 +279,24 @@ namespace weihe {
 			out << str[i];
 		}
 		return out;
+	}
+
+	void test01() {
+		string s1("abccccddefg");
+		cout << s1.find("ccdde") << endl;
+		cout << s1.find("ccdff") << endl;
+
+		string s2("aaa");
+		string s3("bbb");
+		string s4("ccc");
+		string s5("ddd");
+		string s6("aaa");
+		string s7("aaa");
+		cout << (s2 == s3) << endl;
+		cout << (s2 != s3) << endl;
+		cout << (s2 > s3) << endl;
+		cout << (s2 >= s3) << endl;
+		cout << (s2 < s3) << endl;
+		cout << (s2 <= s3) << endl;
 	}
 }
