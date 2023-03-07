@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <time.h>
 #include <vector>
+#include <cassert>
 using namespace std;
 #include "List.h"
 
@@ -153,6 +154,8 @@ int main() {
 	//test02();
 	//test03();
 
-	weihe::test01();
+	//weihe::test01();
+	//weihe::test02();
+	weihe::test03();
 	return 0;
 }
