@@ -13,15 +13,19 @@ namespace weihe {
 	};
 
 	//是类的内置类型，像指针一样，需要指定域作用限定符来使用
-	template<class T, class Ref>
+	template<class T, class Ref, class Ptr>
 	struct __list_iterator {
 		typedef list_node<T> node;
-		typedef __list_iterator<T, Ref> self;
+		typedef __list_iterator<T, Ref, Ptr> self;
 		__list_iterator(node* p)
 			:_pnode(p){ }
 
-		Ref& operator*() {
+		Ref operator*() {
 			return _pnode->_val;
+		}
+
+		Ptr operator->() {
+			return &_pnode->_val;
 		}
 
 		self& operator++ () {
@@ -88,8 +92,8 @@ namespace weihe {
 	class list {
 		typedef list_node<T> node;
 	public:
-		typedef __list_iterator<T, T&> iterator;
-		typedef __list_iterator<T, const T&> const_iterator;
+		typedef __list_iterator<T, T&, T*> iterator;
+		typedef __list_iterator<T, const T&, const T*> const_iterator;
 		
 		iterator begin() {
 			return iterator(_head->_next);
@@ -113,16 +117,37 @@ namespace weihe {
 		list(){
 			empty_initialize();
 		}
-		//拷贝构造
-		list(list& lt) {
+
+		template <class InputIterator>
+		list(InputIterator first, InputIterator last) {
+			empty_initialize();
+			while (first != last) {
+				push_back(*first);
+				++first;
+			}
+		}
+		void swap(list<T>& lt) {
+			std::swap(_head, lt._head);
+			std::swap(_size, lt._size);
+		}
+		//拷贝构造 - 传统写法
+		/*list(const list& lt) {
 			empty_initialize();
 
 			for (auto& e : lt) {
 				push_back(e);
 			}
+		}*/
+
+		//拷贝构造 -- 现代写法
+		list(const list<T>& lt) {
+			empty_initialize();
+			list<T> tmp(lt.begin(), lt.end());
+			swap(tmp);
 		}
-		//赋值运算符重载
-		list& operator=(list& lt) {
+
+		//赋值运算符重载 - 传统写法
+		/*list<T>& operator=(const list<T>& lt) {
 			if (_head != lt._head) {
 				clear();
 				for (auto& e : lt) {
@@ -130,7 +155,14 @@ namespace weihe {
 				}
 			}
 			return *this;
+		}*/
+
+		//现代写法
+		list<T>& operator=(list lt) {
+			swap(lt);
+			return *this;
 		}
+
 		~list() {
 			clear();
 			delete _head;
@@ -166,6 +198,8 @@ namespace weihe {
 			newNode->_next = cur;
 			cur->_prev = newNode;
 
+			++_size;
+
 			return iterator(newNode);
 		}
 
@@ -179,10 +213,22 @@ namespace weihe {
 			next->_prev = prev;
 
 			delete pos._pnode;
+
+			--_size;
+
 			return iterator(next);
+		}
+
+		int size() const {
+			return _size;
+		}
+
+		bool empty() const {
+			return (_size == 0) || (_head->_next == _head);
 		}
 	private:
 		node* _head;
+		int _size = 0;
 	};
 
 	void test01() {
@@ -279,5 +325,96 @@ namespace weihe {
 			it++;
 		}
 		cout << endl;
+	}
+
+	void test04() {
+		list<int> l1;
+		l1.push_back(1);
+		l1.push_back(2);
+		l1.push_back(3);
+		l1.push_back(4);
+		for (auto e : l1) {
+			cout << e << " ";
+		}
+		cout << endl;
+		cout << l1.size() << endl;
+		list<int> l2(l1.begin(), l1.end());
+		for (auto e : l2) {
+			cout << e << " ";
+		}
+		cout << endl;
+		cout << l2.size() << endl;
+
+		list<int> l3(l1);
+		for (auto e : l3) {
+			cout << e << " ";
+		}
+		cout << endl;
+		cout << l3.size() << endl;
+
+		list<int> l4;
+		l4.push_back(99);
+		cout << l4.size() << endl;
+
+		l4 = l1;
+		for (auto e : l4) {
+			cout << e << " ";
+		}
+		cout << endl;
+		cout << l4.size() << endl;
+
+	}
+
+	struct Pos {
+		int _row;
+		int _col;
+		Pos(int row = 0, int col = 0)
+			:_row(row),
+			_col(col) { }
+	};
+
+	/*ostream& operator<<(ostream& out, const Pos& pos) {
+		out << "(" << pos._row << " , " << pos._col << ")";
+		return out;
+	}*/
+
+	void printss(const list<Pos>& lt) {
+		list<Pos>::const_iterator it = lt.begin();
+		while (it != lt.end()) {
+			/*it->_row++;
+			it->_col++;*/
+			cout << it->_row << ":" << it->_col << " ";
+			it++;
+		}
+		cout << endl;
+	}
+
+	void test05() {
+		list<Pos> l1;
+		l1.push_back(Pos(1, 1));
+		l1.push_back(Pos(1, 1));
+		l1.push_back(Pos(2, 2));
+		l1.push_back(Pos(3, 3));
+		l1.push_back(Pos(4, 4));
+		l1.push_back(Pos(5, 5));
+
+		list<Pos>::iterator it = l1.begin();
+		/*while (it != l1.end()) {
+			cout << *it << " ";
+			++it;
+		}
+		cout << endl;*/
+		
+		while (it != l1.end()) {
+			//cout << (&(*it))->_row << "," << (&(*it))->_col << " ";
+			cout << it->_row << "," << it->_col << " ";
+			//cout << it.operator->()->_row << "," << it.operator->()->_col << " ";
+
+			++it;
+		}
+		cout << endl;
+
+
+		printss(l1);
 	}
 }

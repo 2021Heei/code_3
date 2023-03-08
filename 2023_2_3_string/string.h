@@ -217,6 +217,10 @@ namespace weihe {
 			return _capacity;
 		}
 		
+		bool empty() const {
+			return _size == 0;
+		}
+
 	private:
 		char* _str;
 		int _size;//ด๓ะก

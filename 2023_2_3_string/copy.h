@@ -1,6 +1,6 @@
 #pragma once
 
-namespace sjh {
+namespace weihe {
 	class string {
 		friend istream& operator>>(istream& in, string& str);
 		friend ostream& operator<<(ostream& out, const string& str);
@@ -85,6 +85,10 @@ namespace sjh {
 			return *this;
 		}
 
+		void clear() {
+			_size = 0;
+			_str[0] = '\0';
+		}
 
 		void swap(string& str) {
 			std::swap(_str, str._str);
@@ -96,7 +100,6 @@ namespace sjh {
 		}
 		//////////////////////////////////////////
 		//capacity
-
 		//设置容量
 		void reserve(int newcapacity) {
 			char* tmp = new char[newcapacity + 1];
@@ -119,16 +122,16 @@ namespace sjh {
 				_size = n;
 			}
 		}
-		void clear() {
-			_size = 0;
-			_str[0] = '\0';
-		}
+		
 
 		const int size() const {
 			return _size;
 		}
 		const int capacity() const {
 			return _capacity;
+		}
+		bool empty() const {
+			return _size == 0;
 		}
 		//////////////////////////////////////////
 		//access
@@ -177,16 +180,16 @@ namespace sjh {
 			return npos;
 		}
 		// 返回子串s在string中第一次出现的位置
-		size_t find(const char* s, size_t pos = 0) const {
+		size_t find(const char* substring, size_t pos = 0) const {
 			assert(pos < _size);
 			//abccdef   ccdd
 			int i = pos;
 			int j = i;
 			int k = 0;
-			int len = strlen(s);
+			int len = strlen(substring);
 			while (i < _size) {
 				j = i;
-				while (j < _size && k < len && _str[j] == s[k]) {
+				while (j < _size && k < len && _str[j] == substring[k]) {
 					j++;
 					k++;
 				}
@@ -279,24 +282,5 @@ namespace sjh {
 			out << str[i];
 		}
 		return out;
-	}
-
-	void test01() {
-		string s1("abccccddefg");
-		cout << s1.find("ccdde") << endl;
-		cout << s1.find("ccdff") << endl;
-
-		string s2("aaa");
-		string s3("bbb");
-		string s4("ccc");
-		string s5("ddd");
-		string s6("aaa");
-		string s7("aaa");
-		cout << (s2 == s3) << endl;
-		cout << (s2 != s3) << endl;
-		cout << (s2 > s3) << endl;
-		cout << (s2 >= s3) << endl;
-		cout << (s2 < s3) << endl;
-		cout << (s2 <= s3) << endl;
 	}
 }

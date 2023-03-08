@@ -156,6 +156,13 @@ int main() {
 
 	//weihe::test01();
 	//weihe::test02();
-	weihe::test03();
+	//weihe::test03();
+	//weihe::test04();
+	//weihe::test05();
+
+	string s1("11111");
+	string s2("111111111111111");
+	cout << sizeof(s1) << endl;
+	cout << sizeof(s2) << endl;
 	return 0;
 }
