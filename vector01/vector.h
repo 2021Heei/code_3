@@ -19,7 +19,7 @@ namespace weihe {
 		const_iterator end() const{
 			return _finish;
 		}
-		//构造
+		// construct and destroy
 		vector()
 			:_start(nullptr)
 			, _finish(nullptr)
@@ -35,10 +35,7 @@ namespace weihe {
 				first++;
 			}
 		}
-		~vector() {
-			delete[] _start;
-			_start = _finish = _end_of_storage = nullptr;
-		}
+		
 		vector(size_t n, const T& val) 
 			:_start(nullptr)
 			,_finish(nullptr)
@@ -80,6 +77,18 @@ namespace weihe {
 			swap(v);
 			return *this;
 		}
+
+		~vector() {
+			delete[] _start;
+			_start = _finish = _end_of_storage = nullptr;
+		}
+		// capacity
+		int size() const {
+			return _finish - _start;
+		}
+		int capacity() const {
+			return _end_of_storage - _start;
+		}
 		void reserve(size_t n) {
 			if (n > capacity()) {
 				int oldSize = size();
@@ -115,6 +124,17 @@ namespace weihe {
 				_finish = _start + n;
 			}
 		}
+		///////////////access///////////////////////////////
+		T& operator[](size_t pos) {
+			assert(pos < _finish - _start);
+			return _start[pos];
+		}
+		const T& operator[](size_t pos)const {
+			assert(pos < _finish - _start);
+			return _start[pos];
+		}
+
+		///////////////modify/////////////////////////////
 		void push_back(const T& val) {
 			if (_finish == _end_of_storage) {
 				size_t newCapacity = capacity() == 0 ? 4 : capacity() * 2;
@@ -122,6 +142,15 @@ namespace weihe {
 			}
 			*_finish = val;
 			_finish++;
+		}
+		void pop_back() {
+			assert(!empty());
+			_finish--;
+		}
+		void swap(vector<T>& v) {
+			std::swap(_start, v._start);
+			std::swap(_finish, v._finish);
+			std::swap(_end_of_storage, v._end_of_storage);
 		}
 		void insert(iterator pos, const T& val) {
 			assert(pos >= _start && pos <= _finish);
@@ -141,10 +170,7 @@ namespace weihe {
 			_finish++;
 			*pos = val;
 		}
-		void pop_back() {
-			assert(!empty());
-			_finish--;
-		}
+		
 		//迭代器pos再删除后存在失效的情况，为此，erase返回新的迭代器位置用于更新pos
 		iterator erase(iterator pos) {
 			assert(pos < _finish && pos >= _start);
@@ -157,25 +183,11 @@ namespace weihe {
 			--_finish;
 			return pos;
 		}
-		T& operator[](size_t pos) {
-			assert(pos < _finish - _start);
-			return _start[pos];
-		}
-
-		int size() const {
-			return _finish - _start;
-		}
-		int capacity() const {
-			return _end_of_storage - _start;
-		}
+		
 		bool empty() {
 			return _start == _finish;
 		}
-		void swap(vector<T>& v) {
-			std::swap(_start, v._start);
-			std::swap(_finish, v._finish);
-			std::swap(_end_of_storage, v._end_of_storage);
-		}
+		
 	private:
 		iterator _start;//起始
 		iterator _finish;//有效元素的下一个地址

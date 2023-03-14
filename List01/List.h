@@ -19,7 +19,9 @@ namespace weihe {
 		typedef __list_iterator<T, Ref, Ptr> self;
 		__list_iterator(node* p)
 			:_pnode(p){ }
-
+		__list_iterator(const self& it) {
+			_pnode = it._pnode;
+		}
 		Ref operator*() {
 			return _pnode->_val;
 		}
@@ -34,8 +36,9 @@ namespace weihe {
 		}
 
 		self& operator++(int) {
+			self tmp(*this);
 			_pnode = _pnode->_next;
-			return *this;
+			return tmp;
 		}
 
 		self& operator--() {
@@ -49,6 +52,9 @@ namespace weihe {
 		}
 		bool operator!=(const self& it) {
 			return _pnode != it._pnode;
+		}
+		bool operator==(const self& it) {
+			return _pnode == it->_pnode;
 		}
 		node* _pnode;
 	};
@@ -95,20 +101,9 @@ namespace weihe {
 		typedef __list_iterator<T, T&, T*> iterator;
 		typedef __list_iterator<T, const T&, const T*> const_iterator;
 		
-		iterator begin() {
-			return iterator(_head->_next);
-		}
-
-		iterator end() {
-			return iterator(_head);
-		}
-		const_iterator begin() const {
-			return const_iterator(_head->_next);
-		}
-
-		const_iterator end() const{
-			return const_iterator(_head);
-		}
+		
+		///////////////////////////////////////////////////////////////
+		// List的构造
 		void empty_initialize() {
 			_head = new node(T());
 			_head->_next = _head;
@@ -117,7 +112,18 @@ namespace weihe {
 		list(){
 			empty_initialize();
 		}
-
+		list(int n, const T& value = T()) {
+			empty_initialize();
+			
+			for (int i = 0; i < n; ++i) {
+				node* newNode = new node(value);
+				node* tail = _head->_prev;
+				tail->_next = newNode;
+				newNode->_prev = tail;
+				_head->_prev = newNode;
+				newNode->_next = _head;
+			}
+		}
 		template <class InputIterator>
 		list(InputIterator first, InputIterator last) {
 			empty_initialize();
@@ -158,23 +164,65 @@ namespace weihe {
 		}*/
 
 		//现代写法
-		list<T>& operator=(list lt) {
-			swap(lt);
-			return *this;
-		}
 
 		~list() {
 			clear();
 			delete _head;
 			_head = nullptr;
 		}
-		void clear() {
-			
-			iterator it = begin();
-			while (it != end()) {
-				it = erase(it);
-			}
+
+		///////////////////////////////////////////////////////////////
+		// List Iterator
+		iterator begin() {
+			return iterator(_head->_next);
 		}
+
+		iterator end() {
+			return iterator(_head);
+		}
+		const_iterator begin() const {
+			return const_iterator(_head->_next);
+		}
+
+		const_iterator end() const {
+			return const_iterator(_head);
+		}
+
+		///////////////////////////////////////////////////////////////
+		// List Capacity
+		int size() const {
+			return _size;
+		}
+
+		bool empty() const {
+			return (_size == 0) || (_head->_next == _head);
+		}
+
+		////////////////////////////////////////////////////////////
+		// List Access
+		T& front() {
+			assert(!empty());
+			return _head->_next->_val;
+		}
+
+		const T& front()const {
+			assert(!empty());
+			return _head->_next->_val;
+		}
+
+		T& back() {
+			assert(!empty());
+			return _head->_prev->_val;
+		}
+
+		const T& back()const {
+			assert(!empty());
+			return _head->_prev->_val;
+		}
+
+		////////////////////////////////////////////////////////////
+		// List Modify
+		
 		void push_back(const T& val) {
 			insert(end(), val);
 		}
@@ -218,13 +266,16 @@ namespace weihe {
 
 			return iterator(next);
 		}
+		void clear() {
 
-		int size() const {
-			return _size;
+			iterator it = begin();
+			while (it != end()) {
+				it = erase(it);
+			}
 		}
-
-		bool empty() const {
-			return (_size == 0) || (_head->_next == _head);
+		list<T>& operator=(list lt) {
+			swap(lt);
+			return *this;
 		}
 	private:
 		node* _head;
@@ -416,5 +467,19 @@ namespace weihe {
 
 
 		printss(l1);
+	}
+
+	void test06() {
+		list<int> l1;
+		l1.push_back(1);
+		l1.push_back(2);
+		l1.push_back(3);
+		l1.push_back(4);
+		prints(l1);
+		cout << l1.front() <<endl;
+		cout << l1.back() <<endl;
+		const list<int> l2(l1);
+		cout << l2.front() << endl;
+		cout << l2.back() << endl;
 	}
 }
