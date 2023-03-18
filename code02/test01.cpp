@@ -110,21 +110,21 @@ void print(A a)
 {
 	a.print();
 }
-int main()
-{
-	A a, * aa, * ab, * ac;
-	B b;
-	C c;
-	aa = &a;
-	ab = &b;
-	ac = &c;
-	a.print();
-	b.print();
-	c.print();
-	aa->print();
-	ab->print();
-	ac->print();
-	print(a);
-	print(b);
-	print(c);
-}
+//int main()
+//{
+//	A a, * aa, * ab, * ac;
+//	B b;
+//	C c;
+//	aa = &a;
+//	ab = &b;
+//	ac = &c;
+//	a.print();
+//	b.print();
+//	c.print();
+//	aa->print();
+//	ab->print();
+//	ac->print();
+//	print(a);
+//	print(b);
+//	print(c);
+//}
