@@ -48,23 +48,105 @@ K::BSTreeNode<int>* Convert(K::BSTreeNode<int>* pRootOfTree) {
 	return head;
 }
 
-int main() {
-	K::BSTree<int> bst;
-	int arr[] = { 10, 6, 4, 8, 14, 12, 18 };
-	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
-		bst.insert(arr[i]);
+int evalRPN(vector<string>& tokens) {
+	stack<int> st;
+	int i = 0;
+	while (i < tokens.size()) {
+		if (isdigit(tokens[i][0])) {
+			st.push(stoi(tokens[i]));
+		}
+		else {
+			int next = st.top();
+			st.pop();
+			int front = st.top();
+			st.pop();
+			switch (tokens[i][0]) {
+			case '+':
+				st.push(front + next);
+				break;
+			case '-':
+				st.push(front - next);
+				break;
+			case '*':
+				st.push(front * next);
+				break;
+			case '/':
+				st.push(front / next);
+				break;
+			}
+		}
+
+		++i;
 	}
-	bst.InOrder();
-	K::BSTreeNode<int>* root = Convert(bst._root);
-	while (root) {
-		cout << root->_key << " ";
-		root = root->_right;
-	}
-	cout << endl;
-	return 0;
+	return st.top();
 }
 
+//int main() {
+//	/*K::BSTree<int> bst;
+//	int arr[] = { 10, 6, 4, 8, 14, 12, 18 };
+//	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); ++i) {
+//		bst.insert(arr[i]);
+//	}
+//	bst.InOrder();
+//	K::BSTreeNode<int>* root = Convert(bst._root);
+//	while (root) {
+//		cout << root->_key << " ";
+//		root = root->_right;
+//	}
+//	cout << endl;*/
+//
+//	vector<string> vs{ "10","6","9","3","+","-11","*","/","*","17","+","5","+" };
+//	int ret = evalRPN(vs);
+//
+//	return 0;
+//}
 
+TreeNode* _buildTree(vector<int>& preorder, int& i, vector<int>& inorder, int left, int right) {
+	int j = left;
+	for (; j <= right; ++j) {
+		if (preorder[i] == inorder[j]) {
+			break;
+		}
+	}
+	TreeNode* root = new TreeNode(preorder[i]);
+	++i;
+	root->left = _buildTree(preorder, i, inorder, left, j);
+	root->right = _buildTree(preorder, i, inorder, j + 1, right);
+	return root;
+}
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+	int i = 0;
+	TreeNode* root = _buildTree(preorder, i, inorder, 0, inorder.size() - 1);
+	return root;
+}
+
+int main()
+
+{
+
+	deque<int> cont = { 1, 2, 3, 4, 5 };
+
+	deque<int>::iterator iter, tempIt;
+
+	for (iter = cont.begin(); iter != cont.end();)
+
+	{
+
+
+
+		tempIt = iter;
+
+
+
+		++iter;
+
+
+
+		cont.erase(tempIt);
+
+	}
+
+}
 ////二叉树前序迭代遍历
 //class Solution {
 //public:
