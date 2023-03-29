@@ -1,10 +1,10 @@
 #pragma once
-namespace KV {
+namespace KVRB {
 	enum Color {
 		RED,
 		BLACK
 	};
-	template <class T, class V>
+	template <class K, class V>
 	struct TreeNode {
 		pair<K, V> _kv;
 		TreeNode* _left;
@@ -12,7 +12,7 @@ namespace KV {
 		TreeNode* _parent;
 		Color _col;
 
-		TreeNode(pair<K, V>& kv)
+		TreeNode(const pair<K, V>& kv)
 			:_kv(kv)
 			,_left(nullptr)
 			,_right(nullptr)
@@ -20,15 +20,15 @@ namespace KV {
 			,_col(RED){ }
 	};
 
-	template <class T, class V>
+	template <class K, class V>
 	struct RBTree {
-		typedef TreeNode<T, V> Node*;
+		typedef TreeNode<K, V> Node;
 		RBTree()
-			:_root(nullptr){}
+			:_root(nullptr) {}
 
 		bool insert(const pair<K, V>& kv) {
 			if (_root == nullptr) {
-				_root = new Node(val);
+				_root = new Node(kv);
 				_root->_col = BLACK;
 				return true;
 			}
@@ -49,9 +49,9 @@ namespace KV {
 				}
 			}
 
-			cur = new Node(val);
+			cur = new Node(kv);
 			cur->_col = RED;
-			if (kv.first < cur->_kv.first) {
+			if (kv.first < parent->_kv.first) {
 				parent->_left = cur;
 				cur->_parent = parent;
 			}
@@ -122,6 +122,8 @@ namespace KV {
 					}
 				}
 			}
+			//确保根节点为黑
+			_root->_col = BLACK;
 			return true;
 		}
 
@@ -181,7 +183,99 @@ namespace KV {
 				subL->_parent = ppNode;
 			}
 		}
+		void Inorder() {
+			return Inorder(_root);
+		}
+
+		bool isBlance() {
+			return isBlance(_root);
+		}
 	private:
 		Node* _root;
+		void Inorder(Node* root) {
+			if (!root) {
+				return;
+			}
+			Inorder(root->_left);
+			cout << root->_kv.first << ":" << root->_kv.second << endl;
+			Inorder(root->_right);
+		}
+		//检查不能直接比较最长路径不超过最短路径的2倍，还要考虑连续的节点不能都为红
+		//稳妥做法是对红黑树四种分别条件进行验证。如果有一条不满足就不是红黑树
+		//1.根节点是黑色的
+		//2.红节点的孩子节点一定都是黑节点（如果存在），即不存在两个连续的红节点
+		//3.最长路径节点数不超过最短路径的2倍
+		//4.每条路径的黑节点个数严格相等
+		bool isBlance(Node* root) {
+			if (root == nullptr) {
+				return true;
+			}
+			//1.
+			if (root->_col != BLACK) {
+				cout << "违反规则：1.根节点是黑色的" << endl;
+				return false;
+			}
+			//2.
+			int ref = 0;
+			Node* cur = root;
+			while (cur) {
+				if (cur->_col == BLACK) {
+					++ref;
+				}
+				cur = cur->_left;
+			}
+			return ContinuousRedNodeAndJudgmentBlackNodeNumber(root, 0, ref);
+			//3.
+
+		}
+
+		bool ContinuousRedNodeAndJudgmentBlackNodeNumber(Node* root, int blackNumber, int ref) {
+			if (root == nullptr) {
+				if (blackNumber != ref) {
+					cout << "违反规则：4.每条路径的黑节点个数严格相等" << endl;
+					return false;
+				}
+				return true;
+			}
+			if (root->_col == RED && root->_parent->_col == RED) {
+				cout << "违反规则：2.红节点的孩子节点一定都是黑节点（如果存在），即不存在两个连续的红节点" << endl;
+				return false;
+			}
+			if (root->_col == BLACK) {
+				blackNumber++;
+			}
+			
+			return ContinuousRedNodeAndJudgmentBlackNodeNumber(root->_left, blackNumber, ref) && ContinuousRedNodeAndJudgmentBlackNodeNumber(root->_right, blackNumber, ref);
+		}
 	};
+
+	void test01() {
+		RBTree<int, int> rbt1;
+		//int arr1[] = { 16, 3, 7, 11, 9, 26, 18, 14, 15 };
+		//int arr1[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14 };
+		int arr1[] = { 1, 2, 3, 4, 6, 7, 8 };
+		for (auto e : arr1) {
+			//cout << e;
+			rbt1.insert(make_pair(e, e));
+			cout << rbt1.isBlance() << endl;
+			//cout << endl;
+		}
+		//rbt1.Inorder();
+		cout << rbt1.isBlance() << endl;
+	}
+
+	void test02() {
+		srand(time(0));
+		RBTree<int, int> rbt1;
+		const int N = 10000;
+		for (int i = 0; i < N; ++i) {
+			int e = rand();
+			//cout << e;
+			rbt1.insert(make_pair(e, e));
+			//cout << endl;
+			//cout << i << ":" << e << ":" << rbt1.isBlance() << endl;
+		}
+		//rbt1.Inorder();
+		cout << rbt1.isBlance() << endl;
+	}
 }
