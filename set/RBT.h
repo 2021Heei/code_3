@@ -1,57 +1,147 @@
 #pragma once
-namespace KVRB {
+namespace weihe {
 	enum Color {
 		RED,
 		BLACK
 	};
-	template <class K, class V>
+	template <class T>
 	struct TreeNode {
-		pair<K, V> _kv;
+		T _val;
 		TreeNode* _left;
 		TreeNode* _right;
 		TreeNode* _parent;
 		Color _col;
 
-		TreeNode(const pair<K, V>& kv)
-			:_kv(kv)
+		TreeNode(const T& val)
+			:_val(val)
 			,_left(nullptr)
 			,_right(nullptr)
 			,_parent(nullptr)
 			,_col(RED){ }
 	};
-
-	template <class K, class V>
+	template<class T, class Ref, class Ptr>
+	struct __RBTreeIterator {
+		typedef TreeNode<T> Node;
+		typedef __RBTreeIterator<T, Ref, Ptr> Self;
+		typedef __RBTreeIterator<T, T&, T*> iterator;
+		Node* _node;
+		__RBTreeIterator(Node* node)
+			:_node(node){ }
+		//根据s的类型不同，这个函数分别表示拷贝构造函数或构造函数
+		__RBTreeIterator(const iterator& s)
+			:_node(s._node){ }
+		Ref operator*() {
+			return _node->_val;
+		}
+		Ptr operator->() {
+			return &_node->_val;
+		}
+		Self& operator++() {
+			if (_node->_right) {
+				//++迭代器，说明当前及之前的节点已经走过了，该走右子树了
+				//分情况：右子树存在就找右子树中最左节点（最小节点）
+				//右子树不存在，持续找祖先，直到cur不是parent的右节点停止，此时parent就是结果
+				Node* cur = _node->_right;
+				while (cur->_left) {
+					cur = cur->_left;
+				}
+				_node = cur;
+			}
+			else {
+				Node* cur = _node;
+				Node* parent = cur->_parent;
+				
+				while (parent && parent->_right == cur) {
+					cur = cur->_parent;
+					parent = parent->_parent;
+				}
+				_node = parent;
+			}
+			return *this;
+		}
+		Self& operator--() {
+			if (_node->_left) {
+				//--迭代器，说明需要往前走（访问左子树或往树上（父亲节点）走），此时当前节点及右子树都访问完了
+				//分情况：当左子树存在，直接去找左子树的最右节点（最大节点）
+				//当左子树不存在，只需向上找，直到cur不是parent的左节点
+				Node* cur = _node->_left;
+				while (cur->_right) {
+					cur = cur->_right;
+				}
+				_node = cur;
+			}
+			else {
+				Node* cur = _node;
+				Node* parent = cur->_parent;
+				while (parent && parent->_left == cur) {
+					cur = cur->_parent;
+					parent->_parent = parent;
+				}
+				_node = parent;
+			}
+			return *this;
+		}
+		bool operator!=(const Self& s) const {
+			return _node != s._node;
+		}
+		bool operator==(const Self& s) const {
+			return _node == s._node;
+		}
+	};
+	template <class K, class T, class KeyOfT>
 	struct RBTree {
-		typedef TreeNode<K, V> Node;
+		typedef TreeNode<T> Node;
+		typedef __RBTreeIterator<T, T&, T*> iterator;
+		typedef __RBTreeIterator<T, const T&, const T*> const_iterator;
 		RBTree()
 			:_root(nullptr) {}
-
-		bool insert(const pair<K, V>& kv) {
-			if (_root == nullptr) {
-				_root = new Node(kv);
-				_root->_col = BLACK;
-				return true;
+		iterator begin() {
+			Node* left = _root;
+			while (left && left->_left) {
+				left = left->_left;
 			}
-
+			return iterator(left);
+		}
+		iterator end() {
+			return iterator(nullptr);
+		}
+		const_iterator begin() const {
+			Node* left = _root;
+			while (left && left->_left) {
+				left = left->_left;
+			}
+			return const_iterator(left);
+		}
+		const_iterator end() const {
+			return const_iterator(nullptr);
+		}
+		pair<iterator, bool> insert(const T& val) {
+			if (_root == nullptr) {
+				_root = new Node(val);
+				_root->_col = BLACK;
+				return pair<iterator, bool>(iterator(_root), true);
+			}
+			KeyOfT kot;//仿函数，自适应k和pair<k,v>结构
 			Node* parent = nullptr;
 			Node* cur = _root;
 			while (cur) {
-				if (kv.first < cur->_kv.first) {
+				if (kot(val) < kot(cur->_val)) {
 					parent = cur;
 					cur = cur->_left;
 				}
-				else if (kv.first > cur->_kv.first) {
+				else if (kot(val) > kot(cur->_val)) {
 					parent = cur;
 					cur = cur->_right;
 				}
 				else {
-					return false;
+					return pair<iterator, bool>(iterator(cur), false);
 				}
 			}
 
-			cur = new Node(kv);
+			cur = new Node(val);
+			Node* newNode = cur;
 			cur->_col = RED;
-			if (kv.first < parent->_kv.first) {
+			if (kot(val) < kot(parent->_val)) {
 				parent->_left = cur;
 				cur->_parent = parent;
 			}
@@ -124,7 +214,7 @@ namespace KVRB {
 			}
 			//确保根节点为黑
 			_root->_col = BLACK;
-			return true;
+			return pair<iterator, bool>(iterator(newNode), true);
 		}
 
 		void RotateL(Node* parent) {
@@ -190,6 +280,7 @@ namespace KVRB {
 		bool isBlance() {
 			return isBlance(_root);
 		}
+		
 	private:
 		Node* _root;
 		void Inorder(Node* root) {
@@ -248,34 +339,54 @@ namespace KVRB {
 			return ContinuousRedNodeAndJudgmentBlackNodeNumber(root->_left, blackNumber, ref) && ContinuousRedNodeAndJudgmentBlackNodeNumber(root->_right, blackNumber, ref);
 		}
 	};
+	//void test03() {
+	//	RBTree<int, int> rbt;
+	//	int arr1[] = { 1, 2, 3, 4, 6, 7, 8 };
+	//	for (auto e : arr1) {
+	//		//cout << e;
+	//		rbt.insert(e);
+	//		//cout << rbt.isBlance() << endl;
+	//		//cout << endl;
+	//	}
 
-	void test01() {
-		RBTree<int, int> rbt1;
-		//int arr1[] = { 16, 3, 7, 11, 9, 26, 18, 14, 15 };
-		//int arr1[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14 };
-		int arr1[] = { 1, 2, 3, 4, 6, 7, 8 };
-		for (auto e : arr1) {
-			//cout << e;
-			rbt1.insert(make_pair(e, e));
-			cout << rbt1.isBlance() << endl;
-			//cout << endl;
-		}
-		//rbt1.Inorder();
-		cout << rbt1.isBlance() << endl;
-	}
+	//	RBTree<int, int>::iterator it = rbt.begin();
+	//	while (it != rbt.end()) {
+	//		cout << *it << " ";
+	//		++it;
+	//	}
+	//	cout << endl;
+	//	for (const auto& e : rbt) {
+	//		cout << e << " ";
+	//	}
+	//	cout << endl;
+	//}
+	//void test01() {
+	//	RBTree<int, int> rbt1;
+	//	//int arr1[] = { 16, 3, 7, 11, 9, 26, 18, 14, 15 };
+	//	//int arr1[] = { 4, 2, 6, 1, 3, 5, 15, 7, 16, 14 };
+	//	int arr1[] = { 1, 2, 3, 4, 6, 7, 8 };
+	//	for (auto e : arr1) {
+	//		//cout << e;
+	//		rbt1.insert(make_pair(e, e));
+	//		cout << rbt1.isBlance() << endl;
+	//		//cout << endl;
+	//	}
+	//	//rbt1.Inorder();
+	//	cout << rbt1.isBlance() << endl;
+	//}
 
-	void test02() {
-		srand(time(0));
-		RBTree<int, int> rbt1;
-		const int N = 10000;
-		for (int i = 0; i < N; ++i) {
-			int e = rand();
-			//cout << e;
-			rbt1.insert(make_pair(e, e));
-			//cout << endl;
-			//cout << i << ":" << e << ":" << rbt1.isBlance() << endl;
-		}
-		//rbt1.Inorder();
-		cout << rbt1.isBlance() << endl;
-	}
+	//void test02() {
+	//	srand(time(0));
+	//	RBTree<int, int> rbt1;
+	//	const int N = 10000;
+	//	for (int i = 0; i < N; ++i) {
+	//		int e = rand();
+	//		//cout << e;
+	//		rbt1.insert(make_pair(e, e));
+	//		//cout << endl;
+	//		//cout << i << ":" << e << ":" << rbt1.isBlance() << endl;
+	//	}
+	//	//rbt1.Inorder();
+	//	cout << rbt1.isBlance() << endl;
+	//}
 }

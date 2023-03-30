@@ -2,12 +2,17 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <utility>
 using namespace std;
 #include "AVL.h"
 #include "RBT.h"
+#include "Set.h"
+#include "Map.h"
+#include "RBTHead.h"
 
 int main() {
-	KVRB::test02();
-
+	//weihe::SetTest02();
+	//weihe::MapTest02();
+	KVRBHead::test02();
 	return 0;
 }
