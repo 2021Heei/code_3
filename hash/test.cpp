@@ -33,8 +33,14 @@ void test() {
 	}
 }
 #include "hash.h"
+#include "unordered_set.h"
+#include "unordered_map.h"
 int main() {
 	
-	closehash::test01();
+	//closehash::test01();
+	//buckethash::testBucketHash01();
+	//weihe::test_unordered_set();
+	weihe::test_unordered_map();
+
 	return 0;
 }
