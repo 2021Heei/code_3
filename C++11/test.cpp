@@ -229,22 +229,63 @@ struct CompareGoodsEvaluateGreater {
 		return g1._evaluate > g2._evaluate;
 	}
 };
-int main() {
-	vector<Goods> vg = { {"苹果", 1, 10},{"梨", 2 , 9}, {"菠萝", 2, 8} };
-	sort(vg.begin(), vg.end(), CompareGoodsEvaluateLess());
-	sort(vg.begin(), vg.end(), CompareGoodsEvaluateGreater());
-	sort(vg.begin(), vg.end(), [](const Goods& g1, const Goods& g2) 
-		{
-			return g1._price < g2._price;
-		});
-	sort(vg.begin(), vg.end(), [](const Goods& g1, const Goods& g2)
-		{
-			return g1._price > g2._price;
-		});
+//int main() {
+//	vector<Goods> vg = { {"苹果", 1, 10},{"梨", 2 , 9}, {"菠萝", 2, 8} };
+//	sort(vg.begin(), vg.end(), CompareGoodsEvaluateLess());
+//	sort(vg.begin(), vg.end(), CompareGoodsEvaluateGreater());
+//	sort(vg.begin(), vg.end(), [](const Goods& g1, const Goods& g2) 
+//		{
+//			return g1._price < g2._price;
+//		});
+//	sort(vg.begin(), vg.end(), [](const Goods& g1, const Goods& g2)
+//		{
+//			return g1._price > g2._price;
+//		});
+//
+//	auto comp = [](int x, int y)->bool {return x < y; };
+//	//auto comp = [](int x, int y) {return x < y; };
+//	cout << typeid(comp(10, 20)).name() << endl;
+//	cout << typeid(comp).name() << endl;
+//	return 0;
+//}
 
-	auto comp = [](int x, int y)->bool {return x < y; };
-	//auto comp = [](int x, int y) {return x < y; };
-	cout << typeid(comp(10, 20)).name() << endl;
-	cout << typeid(comp).name() << endl;
+///////////////////////////////////////////////////////////////////////////
+//异常
+
+double Div(int a, int b) {
+	if (b == 0) {
+		throw "division not zero";
+	}
+	else {
+		return a / b;
+	}
+}
+void func() {
+	int* p1 = new int[10]{ 0 };
+	try {
+		int len, time;
+		cin >> len >> time;
+		cout << Div(len, time) << endl;
+	}
+	catch (const char* msgStr) {
+		cout << "func:" << msgStr << endl;
+		delete[] p1;
+		p1 = nullptr;
+		throw msgStr;
+	}
+	
+	delete[] p1;
+	p1 = nullptr;
+}
+int main() {
+	try {
+		func();
+	}
+	catch (const char* msgStr) {//依据throw的类型匹配
+		cout << "main:" << msgStr << endl;
+	}
+	catch (int msgInt) {
+		cout << "异常" << msgInt << endl;
+	}
 	return 0;
 }
