@@ -6,8 +6,11 @@
 #include <cassert>
 #include <initializer_list>
 #include <algorithm>
+#include <thread>	
 using namespace std;
 #include "List.h"
+#include <windows.h>
+#include "SmartPtr.h"
 
 //int main() {
 //	//初始化列表，提升为一个类模板了
@@ -254,7 +257,8 @@ struct CompareGoodsEvaluateGreater {
 
 double Div(int a, int b) {
 	if (b == 0) {
-		throw "division not zero";
+		string s = "division not zero";
+		throw s;
 	}
 	else {
 		return a / b;
@@ -267,25 +271,213 @@ void func() {
 		cin >> len >> time;
 		cout << Div(len, time) << endl;
 	}
-	catch (const char* msgStr) {
+	catch (string msgStr) {
 		cout << "func:" << msgStr << endl;
 		delete[] p1;
 		p1 = nullptr;
-		throw msgStr;
+		//throw msgStr;
+		throw;
 	}
 	
 	delete[] p1;
 	p1 = nullptr;
 }
+//int main() {
+//	try {
+//		func();
+//	}
+//	//catch (const char* msgStr) {//依据throw的类型匹配
+//	//	cout << "main:" << msgStr << endl;
+//	//}
+//	catch (...) {
+//		cout << "未知异常`" << endl;
+//	}
+//	/*catch (int msgInt) {
+//		cout << "异常" << msgInt << endl;
+//	}*/
+//	return 0;
+//}
+
+//int main() {
+//	vector<int> v;
+//	//v.reserve(1000000000);//40亿字节
+//	v.push_back(10);
+//	//cout << v[1] << endl;
+//	return 0;
+//}
+class Exception {
+public:
+	Exception(const string errmsg, int id)
+		:_errmsg(errmsg)
+		,_id(id) { }
+	virtual string what() const {
+		return "";
+	}
+private:
+	string _errmsg;
+	int _id;
+};
+class f01 : public Exception {
+public:
+	f01(const string errmsg, int id, string type)
+		:Exception(errmsg, id),
+		_type(type){ }
+	virtual string what() const {
+		string str = "f01";
+		str += _type;
+		return str;
+	}
+private:
+	string _type;
+};
+class f02 : public Exception {
+public:
+	f02(const string errmsg, int id, string type)
+		:Exception(errmsg, id),
+		_type(type) { }
+	virtual string what() const {
+		string str = "f02";
+		str += _type;
+		return str;
+	}
+private:
+	string _type;
+};
+class f03 : public Exception {
+public:
+	f03(const string errmsg, int id, string type)
+		:Exception(errmsg, id),
+		_type(type) { }
+	virtual string what() const {
+		string str = "f03";
+		str += _type;
+		return str;
+	}
+private:
+	string _type;
+};
+void f3() {
+	int t = rand();
+	if (t % 5 == 0) {
+		throw f03("Exception", 2, "333").what();
+	}
+	else {
+		cout << "f03 success" << endl;
+	}
+}
+void f2() {
+	int t = rand();
+	if (t % 3 == 0) {
+		throw f02("Exception", 2, "222").what();
+	}
+	else {
+		cout << "f02 success" << endl;
+
+	}
+	f3();
+}
+
+void f1() {
+	int t = rand();
+	if (t % 2 == 0) {
+		throw f01("Exception", 1, "111").what();
+	}
+	else {
+		cout << "f01 success" << endl;
+	}
+	f2();
+}
+
+//int main() {
+//	srand(time(0));
+//	while (1) {
+//		try {
+//			f1();
+//		}
+//		catch (const Exception& e) {
+//			cout << e.what() << endl;
+//		}
+//		catch (...) {
+//			cout << "unknow exception" << endl;
+//		}
+//		Sleep(1000);
+//	}
+//	return 0;
+//}
+
+
+//////////////////////////////////////////////////////////
+//智能指针
+
+void func01() {
+	int* p1 = new int[10];
+	int* p2 = new int[10];
+	weihe::auto_ptr<int> ap1(p1);
+	weihe::auto_ptr<int> ap2(p2);
+	*ap1 = 10;
+	ap1[0]--;
+	cout << *ap1 << endl;
+
+	int len, time;
+	cin >> len >> time;
+	cout << Div(len, time) << endl;
+}
+
+//int main() {
+//	try {
+//		func01();
+//	}
+//	catch (...) {
+//		cout << "未知异常" << endl;
+//	}
+//	return 0;
+//}
+
+//unique_ptr 禁止对象之间进行赋值，从根源上解决了赋值的问题
+//int main() {
+//	weihe::unique_ptr<int> up1(new int);
+//	//weihe::unique_ptr<int> up2(up1);
+//	weihe::unique_ptr<int> up = up1;
+//	*up1 = 10;
+//	cout << *up1 << endl;
+//	return 0;
+//}
+
+//shared_ptr
+//int main() {
+//	weihe::shared_ptr<int> sp1(new int);
+//	weihe::shared_ptr<int> sp2(sp1);
+//	*sp1 = 10;
+//	cout << *sp1 << " " << *sp2 << endl;
+//	//cout << *sp1 << endl;
+//	weihe::shared_ptr<int> sp3(sp1);
+//
+//	weihe::shared_ptr<int> sp4(new int);
+//	weihe::shared_ptr<int> sp5(sp4);
+//
+//	sp1 = sp1;
+//	sp2 = sp1;
+//	sp4 = sp1;
+//	return 0;
+//}
+
+//int main() {
+//	int* p1 = new int;
+//	unique_ptr<int> up1(p1);
+//	int* p2 = p1;
+//	unique_ptr<int> up2(p2);
+//	return 0;
+//}
+
+//int main() {
+//	int* p1 = new int;
+//	weihe::shared_ptr<int> sp1(p1);
+//	int* p2 = p1;
+//	weihe::shared_ptr<int> sp2(p2);
+//	return 0;
+//}
+
 int main() {
-	try {
-		func();
-	}
-	catch (const char* msgStr) {//依据throw的类型匹配
-		cout << "main:" << msgStr << endl;
-	}
-	catch (int msgInt) {
-		cout << "异常" << msgInt << endl;
-	}
+	weihe::SmartPtrTest01();
 	return 0;
 }
