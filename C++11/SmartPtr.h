@@ -103,12 +103,16 @@ namespace weihe {
 		thread t1([&]() {
 			for (int i = 0; i < n; ++i) {
 				shared_ptr<int> sp2(sp1);
+				cout << sp1.use_count() << endl;
+
 			}
 			}
 		);
 		thread t2([&]() {
 			for (int i = 0; i < n; ++i) {
 				shared_ptr<int> sp3(sp1);
+				cout << sp1.use_count() << endl;
+
 			}
 		}
 		);

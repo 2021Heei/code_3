@@ -477,7 +477,119 @@ void func01() {
 //	return 0;
 //}
 
+//int main() {
+//	weihe::SmartPtrTest01();
+//	return 0;
+//}
+
+///////////////////////////////////////////////
+//特殊类类型转换
+//inttend : 替换C语言中的隐式类型转换和强制类型转换(显式类型转换)
+//static_cast/reinterpret_cast/const_cast/dynamic_cast;
+
+//static_cast
+//转换前后的的类型表示相近的意义，比如int到double，int到char，表示的都是数
+//int main() {
+//	int a = 10;
+//	double b = static_cast<double>(a);
+//	return 0;
+//}
+
+//reinterpret_cast
+//转换前后的类型表示的意义相差较大，比如int到int*
+//int main() {
+//	int a = 10;
+//	//int* p = static_cast<int*>(a);
+//	int* p = reinterpret_cast<int*>(a);
+//	cout << p << endl;
+//	cout << *p << endl;
+//	return 0;
+//}
+
+//const_cast
+//对于const修饰的变量，可以通过const_cast转换为非const修饰的指针或引用
+//修改的是限定符const
+//这里valatile关键字的作用是让编译器不要把const修饰的a放入寄存器（10），这样每次使用a时需要去内存单元取，这样可以保持a与转换后的类型变量都去相同的内存单元取数据（20 or 30），
+//int main() {
+//	volatile const int a = 10;
+//	//const int a = 10;
+//	int* p = const_cast<int*>(&a);
+//	
+//	*p = 20;
+//	cout << a << endl;
+//	cout << *p << endl;
+//	printf("%p\n", &a);
+//	printf("%p\n", p);
+//	cout << endl;
+//	int& r = const_cast<int&>(a);
+//	r = 30;
+//	cout << a << endl;
+//	cout << *p << endl;
+//	cout << r << endl;
+//	printf("%p\n", &a);
+//	printf("%p\n", p);
+//	printf("%p\n", &r);
+//	cout << &a << endl;
+//	cout << p << endl;
+//	cout << &r << endl;
+//	return 0;
+//}
+
+//dynamic_cast
+//对于类类型来说，子类指针先天可以转为父类指针，而父类指针不能直接转换为子类指针，引用也是如此。
+//dynamic_cast对此转换进行检查，
+//对于子类指针转父类指针，可以转换，返回转换后的那个指针
+//对于弗雷指针转子类指针，不能转换，返回空
+
+class A {
+public:
+	virtual void test() {
+
+	}
+	int _a;
+};
+
+class AB : public A {
+public:
+	int _b;
+};
+
+void func03(A* _ptr) {
+	//直接强制类型转换，可能导致程序出错，比如使用到了子类中父类不存在的对象
+	AB* _bptr = (AB*)_ptr;
+	_bptr->_a = 10;
+	_bptr->_b = 20;
+	cout << _bptr->_a << ":" << _bptr->_b << endl;
+}
+void func04(A* _ptr) {
+	AB* _bptr = dynamic_cast<AB*>(_ptr);
+	if(_bptr){
+		_bptr->_a = 10;
+		_bptr->_b = 20;
+		cout << _bptr->_a << ":" << _bptr->_b << endl;
+	}
+	else {
+		cout << "error change" << endl;
+	}
+	cout << _bptr << endl;
+}
+void func05(AB& _ptr) {
+	A& _bptr = dynamic_cast<A&>(_ptr);
+	/*if () {
+		_bptr._a = 10;
+		_bptr._b = 20;
+		cout << _bptr._a << ":" << _bptr._b << endl;
+	}
+	else {
+		cout << "error change" << endl;
+	}*/
+	cout << typeid(_bptr).name() << endl;
+}
 int main() {
-	weihe::SmartPtrTest01();
+	A aa;
+	AB bb;
+	//func03(&aa);
+	//func04(&aa);
+	func05(bb);
 	return 0;
 }
