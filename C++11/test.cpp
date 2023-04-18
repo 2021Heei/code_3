@@ -585,11 +585,13 @@ void func05(AB& _ptr) {
 	}*/
 	cout << typeid(_bptr).name() << endl;
 }
-int main() {
-	A aa;
-	AB bb;
-	//func03(&aa);
-	//func04(&aa);
-	func05(bb);
-	return 0;
-}
+//int main() {
+//	A aa;
+//	AB bb;
+//	//func03(&aa);
+//	//func04(&aa);
+//	func05(bb);
+//	return 0;
+//}
+
+
